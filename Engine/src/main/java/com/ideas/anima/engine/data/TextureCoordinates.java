@@ -8,4 +8,12 @@ public class TextureCoordinates extends Block {
 
         this.content = content;
     }
+
+    public float[] getContent() {
+        return content;
+    }
+
+    public void setContent(float[] content) {
+        this.content = content;
+    }
 }

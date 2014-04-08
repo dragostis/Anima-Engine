@@ -10,23 +10,35 @@ public class Model extends Block {
         super(indices);
     }
 
+    public Vertices getVertices() {
+        return vertices;
+    }
+
     public void setVertices(Vertices vertices) {
         this.vertices = vertices;
+    }
+
+    public TextureCoordinates getTextureCoordinates() {
+        return textureCoordinates;
     }
 
     public void setTextureCoordinates(TextureCoordinates textureCoordinates) {
         this.textureCoordinates = textureCoordinates;
     }
 
+    public Texture getTexture() {
+        return texture;
+    }
+
     public void setTexture(Texture texture) {
         this.texture = texture;
     }
 
-    public void setNormalMap(NormalMap normalMap) {
-        this.normalMap = normalMap;
+    public NormalMap getNormalMap() {
+        return normalMap;
     }
 
-    public float[] getArray() {
-        return vertices.getContent();
+    public void setNormalMap(NormalMap normalMap) {
+        this.normalMap = normalMap;
     }
 }

@@ -12,4 +12,8 @@ public class Vertices extends Block {
     public float[] getContent() {
         return content;
     }
+
+    public void setContent(float[] content) {
+        this.content = content;
+    }
 }

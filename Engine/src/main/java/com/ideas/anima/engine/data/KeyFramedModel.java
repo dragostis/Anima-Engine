@@ -7,6 +7,10 @@ public class KeyFramedModel extends Block {
         super(indices);
     }
 
+    public Model[] getChildren() {
+        return children;
+    }
+
     public void setChildren(Model[] children) {
         this.children = children;
     }
