@@ -83,15 +83,6 @@ public class Data {
                         blocks.add(new Vertices(content));
 
                         break;
-                    case TEXTURE_COORDINATES:
-                        length = dataInputStream.readInt();
-                        content = new float[length];
-
-                        for (int i = 0; i < length; i++) content[i] = dataInputStream.readFloat();
-
-                        blocks.add(new Vertices(content));
-
-                        break;
                     case TEXTURE:
                         path = dataInputStream.readUTF();
 
@@ -115,7 +106,6 @@ public class Data {
                 Model model = (Model) block;
 
                 model.setVertices((Vertices) blocks.get(block.getIndices()[0]));
-                model.setTextureCoordinates((TextureCoordinates) blocks.get(block.getIndices()[1]));
                 model.setTexture((Texture) blocks.get(block.getIndices()[2]));
                 model.setNormalMap((NormalMap) blocks.get(block.getIndices()[3]));
             }
@@ -161,7 +151,6 @@ public class Data {
         PARTICLE,
         ANIMATED_PARTICLE,
         VERTICES,
-        TEXTURE_COORDINATES,
         TEXTURE,
         NORMAL_MAP
     }

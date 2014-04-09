@@ -2,7 +2,6 @@ package com.ideas.anima.engine.data;
 
 public class Model extends Block {
     private Vertices vertices;
-    private TextureCoordinates textureCoordinates;
     private Texture texture;
     private NormalMap normalMap;
 
@@ -16,14 +15,6 @@ public class Model extends Block {
 
     public void setVertices(Vertices vertices) {
         this.vertices = vertices;
-    }
-
-    public TextureCoordinates getTextureCoordinates() {
-        return textureCoordinates;
-    }
-
-    public void setTextureCoordinates(TextureCoordinates textureCoordinates) {
-        this.textureCoordinates = textureCoordinates;
     }
 
     public Texture getTexture() {
