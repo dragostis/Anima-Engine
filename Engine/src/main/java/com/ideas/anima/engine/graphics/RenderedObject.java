@@ -31,5 +31,5 @@ public abstract class RenderedObject extends GameObject {
         Matrix.scaleM(modelMatrix, 0, getScale().x, getScale().y, getScale().z);
     }
 
-    public abstract void draw(float deltaTime, int programHandle);
+    public abstract void draw(float deltaTime, Scene scene);
 }
