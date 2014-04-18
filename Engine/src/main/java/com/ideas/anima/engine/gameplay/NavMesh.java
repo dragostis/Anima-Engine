@@ -1,6 +1,6 @@
 package com.ideas.anima.engine.gameplay;
 
-import com.ideas.anima.engine.data.Model;
+import com.ideas.anima.engine.data.blocks.ModelBlock;
 import com.ideas.anima.engine.graphics.Vector;
 
 import java.util.ArrayList;
@@ -8,12 +8,12 @@ import java.util.List;
 
 public class NavMesh {
     private final float stepRadius;
-    private Model mesh;
+    private float[] meshArray;
     private float unitSize;
     private List<AstarSample> samples;
 
-    public NavMesh(Model mesh, float unitSize) {
-        this.mesh = mesh;
+    public NavMesh(ModelBlock mesh, float unitSize) {
+        this.meshArray = mesh.getVerticesBlock().getContent();
         this.unitSize = unitSize;
 
         stepRadius = unitSize * (float) Math.sqrt(2.1f);
@@ -22,9 +22,9 @@ public class NavMesh {
     }
 
     private void generateSamples() {
-        List<AstarSample> temporarySampleList = new ArrayList<AstarSample>();
+        List<AstarSample> temporarySampleList = new ArrayList<>();
 
-        samples = new ArrayList<AstarSample>();
+        samples = new ArrayList<>();
 
         Vector min = getMin();
         Vector max = getMax();
@@ -39,9 +39,9 @@ public class NavMesh {
             }
         }
 
-        for (int i = 0; i < mesh.getArray().length; i += 24) {
+        for (int i = 0; i < meshArray.length; i += 15) {
             for (AstarSample temporarySample : temporarySampleList) {
-                Vector triangle = getTriangleCoordinates(temporarySample.position, mesh, i);
+                Vector triangle = getTriangleCoordinates(temporarySample.position, i);
 
                 if (triangle.x >= 0.0f && triangle.y >= 0.0f && triangle.z >= 0.0f)
                     if (!samples.contains(temporarySample))
@@ -64,11 +64,11 @@ public class NavMesh {
     public float getHeight(Vector position) {
         float height = 0.0f;
 
-        for (int i = 0; i < mesh.getArray().length; i += 24) {
-            Vector triangle = getTriangleCoordinates(position, mesh, i);
+        for (int i = 0; i < meshArray.length; i += 15) {
+            Vector triangle = getTriangleCoordinates(position, i);
 
-            height = mesh.getArray()[i + 1] * triangle.x + mesh.getArray()[i + 9] * triangle.y
-                    + mesh.getArray()[i + 17] * triangle.z;
+            height = meshArray[i + 1] * triangle.x + meshArray[i + 5] * triangle.y
+                    + meshArray[i + 11] * triangle.z;
 
             if (!(triangle.x < 0.0f || triangle.y < 0.0f || triangle.z < 0.0f)) break;
         }
@@ -77,30 +77,30 @@ public class NavMesh {
     }
 
     private Vector getMin() {
-        Vector min = new Vector(mesh.getArray()[0], mesh.getArray()[1]);
+        Vector min = new Vector(meshArray[0], meshArray[2]);
 
-        for (int i = 3; i < mesh.getArray().length; i++) {
-            if (min.x > mesh.getArray()[i] && i % 3 == 0) min.x = mesh.getArray()[i];
+        for (int i = 5; i < meshArray.length; i += 5) {
+            if (min.x > meshArray[i]) min.x = meshArray[i];
 
-            if (min.y > mesh.getArray()[i] && i % 3 == 2) min.y = mesh.getArray()[i];
+            if (min.y > meshArray[i + 2]) min.y = meshArray[i + 2];
         }
 
         return min;
     }
 
     private Vector getMax() {
-        Vector max = new Vector(mesh.getArray()[0], mesh.getArray()[1]);
+        Vector max = new Vector(meshArray[0], meshArray[2]);
 
-        for (int i = 3; i < mesh.getArray().length; i++) {
-            if (max.x < mesh.getArray()[i] && i % 3 == 0) max.x = mesh.getArray()[i];
+        for (int i = 5; i < meshArray.length; i += 5) {
+            if (max.x < meshArray[i]) max.x = meshArray[i];
 
-            if (max.y < mesh.getArray()[i] && i % 3 == 2) max.y = mesh.getArray()[i];
+            if (max.y < meshArray[i + 2]) max.y = meshArray[i + 2];
         }
 
         return max;
     }
 
-    private Vector getTriangleCoordinates(Vector position, Model mesh, int i) {
+    private Vector getTriangleCoordinates(Vector position, int i) {
         Vector triangle = new Vector();
 
         float x;
@@ -114,14 +114,14 @@ public class NavMesh {
         float y3;
 
         x = position.x;
-        x1 = mesh.getArray()[i];
-        x2 = mesh.getArray()[i + 8];
-        x3 = mesh.getArray()[i + 16];
+        x1 = meshArray[i];
+        x2 = meshArray[i + 5];
+        x3 = meshArray[i + 10];
 
         y = position.y;
-        y1 = mesh.getArray()[i + 2];
-        y2 = mesh.getArray()[i + 10];
-        y3 = mesh.getArray()[i + 18];
+        y1 = meshArray[i + 2];
+        y2 = meshArray[i + 7];
+        y3 = meshArray[i + 12];
 
         if (x < x1 && x < x2 && x < x3 || x > x1 && x > x2 && x > x3) return new Vector(-1.0f);
 
