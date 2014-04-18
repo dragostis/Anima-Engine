@@ -2,7 +2,6 @@ package com.ideas.anima.engine;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.opengl.EGLConfig;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import com.ideas.anima.engine.audio.Audio;
 import com.ideas.anima.engine.input.Input;
 import com.ideas.anima.engine.io.IO;
 
+import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public abstract class Game extends Activity implements GLSurfaceView.Renderer {
@@ -63,7 +63,8 @@ public abstract class Game extends Activity implements GLSurfaceView.Renderer {
         isPaused = false;
     }
 
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+    @Override
+    public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         this.screen = getStartScreen();
         screen.resume();
         startTime = System.nanoTime();
@@ -87,7 +88,7 @@ public abstract class Game extends Activity implements GLSurfaceView.Renderer {
         }
 
         screen.update(deltaTime);
-        screen.draw(deltaTime);
+        screen.draw();
     }
 
     public void setScreen(Screen screen) {
