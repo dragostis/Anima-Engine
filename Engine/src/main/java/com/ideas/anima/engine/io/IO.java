@@ -11,8 +11,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class IO {
-    AssetManager assetManager;
-    String externalStoragePath;
+    private AssetManager assetManager;
+    private String externalStoragePath;
 
     public IO(AssetManager assetManager) {
         this.assetManager = assetManager;
