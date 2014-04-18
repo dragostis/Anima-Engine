@@ -19,9 +19,12 @@ import java.util.List;
 
 public class Data {
     private Block root;
+    private IO io;
 
-    public Data(InputStream inputStream) throws IOException {
+    public Data(InputStream inputStream, IO io) throws IOException {
         DataInputStream dataInputStream = new DataInputStream(inputStream);
+
+        this.io = io;
 
         root = getRoot(dataInputStream);
     }
