@@ -3,11 +3,11 @@ package com.ideas.anima.engine.data;
 public class Block {
     private int[] indices;
 
-    public Block(int[] indices) {
+    protected Block(int[] indices) {
         this.indices = indices;
     }
 
-    public int[] getIndices() {
+    protected int[] getIndices() {
         return indices;
     }
 }
