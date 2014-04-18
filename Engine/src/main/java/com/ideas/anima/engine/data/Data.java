@@ -1,5 +1,15 @@
 package com.ideas.anima.engine.data;
 
+import com.ideas.anima.engine.data.blocks.AnimatedParticleBlock;
+import com.ideas.anima.engine.data.blocks.CompoundModelBLock;
+import com.ideas.anima.engine.data.blocks.KeyFramedModelBlock;
+import com.ideas.anima.engine.data.blocks.ModelBlock;
+import com.ideas.anima.engine.data.blocks.NormalMapBlock;
+import com.ideas.anima.engine.data.blocks.ParticleBlock;
+import com.ideas.anima.engine.data.blocks.TextureBlock;
+import com.ideas.anima.engine.data.blocks.VerticesBlock;
+import com.ideas.anima.engine.io.IO;
+
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
@@ -14,6 +24,10 @@ public class Data {
         DataInputStream dataInputStream = new DataInputStream(inputStream);
 
         root = getRoot(dataInputStream);
+    }
+
+    public Block getRoot() {
+        return root;
     }
 
     private Block getRoot(DataInputStream dataInputStream) throws IOException {
@@ -38,7 +52,7 @@ public class Data {
 
                         for (int i = 0; i < numberOfChildren; i++) indices[i] = dataInputStream.readInt();
 
-                        blocks.add(new Model(indices));
+                        blocks.add(new ModelBlock(indices));
 
                         break;
                     case COMPOUND_MODEL:
@@ -47,7 +61,7 @@ public class Data {
 
                         for (int i = 0; i < numberOfChildren; i++) indices[i] = dataInputStream.readInt();
 
-                        blocks.add(new CompoundModel(indices));
+                        blocks.add(new CompoundModelBLock(indices));
 
                         break;
                     case KEY_FRAMED_MODEL:
@@ -56,13 +70,13 @@ public class Data {
 
                         for (int i = 0; i < numberOfChildren; i++) indices[i] = dataInputStream.readInt();
 
-                        blocks.add(new KeyFramedModel(indices));
+                        blocks.add(new KeyFramedModelBlock(indices));
 
                         break;
                     case PARTICLE:
                         path = dataInputStream.readUTF();
 
-                        blocks.add(new Particle(path));
+                        blocks.add(new ParticleBlock(path));
 
                         break;
                     case ANIMATED_PARTICLE:
@@ -71,7 +85,7 @@ public class Data {
 
                         for (int i = 0; i < numberOfChildren; i++) indices[i] = dataInputStream.readInt();
 
-                        blocks.add(new AnimatedParticle(indices));
+                        blocks.add(new AnimatedParticleBlock(indices));
 
                         break;
                     case VERTICES:
@@ -80,19 +94,19 @@ public class Data {
 
                         for (int i = 0; i < length; i++) content[i] = dataInputStream.readFloat();
 
-                        blocks.add(new Vertices(content));
+                        blocks.add(new VerticesBlock(content));
 
                         break;
                     case TEXTURE:
                         path = dataInputStream.readUTF();
 
-                        blocks.add(new Texture(path));
+                        blocks.add(new TextureBlock(io.readAsset(path)));
 
                         break;
                     case NORMAL_MAP:
                         path = dataInputStream.readUTF();
 
-                        blocks.add(new NormalMap(path));
+                        blocks.add(new NormalMapBlock(io.readAsset(path)));
 
                         break;
                 }
@@ -102,42 +116,42 @@ public class Data {
         }
 
         for (Block block : blocks) {
-            if (block instanceof Model) {
-                Model model = (Model) block;
+            if (block instanceof ModelBlock) {
+                ModelBlock modelBlock = (ModelBlock) block;
 
-                model.setVertices((Vertices) blocks.get(block.getIndices()[0]));
-                model.setTexture((Texture) blocks.get(block.getIndices()[2]));
-                model.setNormalMap((NormalMap) blocks.get(block.getIndices()[3]));
+                modelBlock.setVerticesBlock((VerticesBlock) blocks.get(block.getIndices()[0]));
+                modelBlock.setTextureBlock((TextureBlock) blocks.get(block.getIndices()[1]));
+                modelBlock.setNormalMapBlock((NormalMapBlock) blocks.get(block.getIndices()[2]));
             }
 
-            if (block instanceof CompoundModel) {
-                CompoundModel compoundModel = (CompoundModel) block;
-                Model[] children = new Model[block.getIndices().length];
+            if (block instanceof CompoundModelBLock) {
+                CompoundModelBLock compoundModelBLock = (CompoundModelBLock) block;
+                ModelBlock[] children = new ModelBlock[block.getIndices().length];
 
-                for (int i = 0; i < children.length; i++) children[i] = (Model) blocks.get(
+                for (int i = 0; i < children.length; i++) children[i] = (ModelBlock) blocks.get(
                         block.getIndices()[i]);
 
-                compoundModel.setChildren(children);
+                compoundModelBLock.setChildren(children);
             }
 
-            if (block instanceof KeyFramedModel) {
-                KeyFramedModel keyFramedModel = (KeyFramedModel) block;
-                Model[] children = new Model[block.getIndices().length];
+            if (block instanceof KeyFramedModelBlock) {
+                KeyFramedModelBlock keyFramedModelBlock = (KeyFramedModelBlock) block;
+                ModelBlock[] children = new ModelBlock[block.getIndices().length];
 
-                for (int i = 0; i < children.length; i++) children[i] = (Model) blocks.get(
+                for (int i = 0; i < children.length; i++) children[i] = (ModelBlock) blocks.get(
                         block.getIndices()[i]);
 
-                keyFramedModel.setChildren(children);
+                keyFramedModelBlock.setChildren(children);
             }
 
-            if (block instanceof AnimatedParticle) {
-                AnimatedParticle animatedParticle = (AnimatedParticle) block;
-                Particle[] children = new Particle[block.getIndices().length];
+            if (block instanceof AnimatedParticleBlock) {
+                AnimatedParticleBlock animatedParticleBlock = (AnimatedParticleBlock) block;
+                ParticleBlock[] children = new ParticleBlock[block.getIndices().length];
 
-                for (int i = 0; i < children.length; i++) children[i] = (Particle) blocks.get(
+                for (int i = 0; i < children.length; i++) children[i] = (ParticleBlock) blocks.get(
                         block.getIndices()[i]);
 
-                animatedParticle.setChildren(children);
+                animatedParticleBlock.setChildren(children);
             }
         }
 

@@ -1,14 +1,16 @@
-package com.ideas.anima.engine.data;
+package com.ideas.anima.engine.data.blocks;
+
+import com.ideas.anima.engine.data.Block;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-public class Vertices extends Block {
+public class VerticesBlock extends Block {
     private static final int bytesPerFloat = 4;
     private FloatBuffer floatBuffer;
 
-    public Vertices(float[] content) {
+    public VerticesBlock(float[] content) {
         super(null);
 
         putInBuffer(content);
