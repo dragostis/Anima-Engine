@@ -7,9 +7,9 @@ public class FramebufferObject {
     private int height;
     private int framebufferHandle;
     private Texture[] textures;
-    private Texture depthTexture;
+    private int[] buffers;
 
-    public FramebufferObject(int width, int height, int numOfTextures, boolean depth) {
+    public FramebufferObject(int width, int height, int numOfTextures) {
         this.width = width;
         this.height = height;
         textures = new Texture[numOfTextures];
@@ -36,25 +36,19 @@ public class FramebufferObject {
             );
         }
 
-        if (depth) {
-            depthTexture = new Texture(width, height, true);
-
-            GLES30.glFramebufferTexture2D(
-                    GLES30.GL_FRAMEBUFFER,
-                    GLES30.GL_DEPTH_ATTACHMENT,
-                    GLES30.GL_TEXTURE_2D,
-                    depthTexture.getTextureHandle(),
-                    0
-            );
-        }
-
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
 
         framebufferHandle = framebufferHandleArray[0];
+
+        buffers = new int[textures.length];
+
+        for (int i = 0; i < textures.length; i++) buffers[i] = GLES30.GL_COLOR_ATTACHMENT0 + i;
     }
 
     public void bind() {
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, framebufferHandle);
+
+        GLES30.glDrawBuffers(textures.length, buffers, 0);
 
         GLES30.glViewport(0, 0, width, height);
 
@@ -67,7 +61,6 @@ public class FramebufferObject {
         GLES30.glDeleteFramebuffers(1, frambufferHandleArray, 0);
 
         for (Texture texture : textures) texture.dispose();
-        if (depthTexture != null) depthTexture.dispose();
     }
 
     public static void unbind(int width, int height) {
