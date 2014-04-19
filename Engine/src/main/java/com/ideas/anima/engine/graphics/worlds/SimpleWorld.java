@@ -43,7 +43,6 @@ public class SimpleWorld extends World {
         FramebufferObject.unbind(getGame().glView.getWidth(), getGame().glView.getHeight());
 
         simpleScene.use();
-
         simpleScene.draw();
     }
 }
