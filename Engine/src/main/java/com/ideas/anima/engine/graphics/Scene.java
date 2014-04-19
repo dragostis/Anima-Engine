@@ -3,14 +3,14 @@ package com.ideas.anima.engine.graphics;
 import android.opengl.GLES30;
 
 public abstract class Scene {
-    private Program program;
+    protected Program program;
     private World world;
-    private int positionHandle;
-    private int textCoordHandle;
-    private int mvMatrixHandle;
-    private int mvpMatrixHandle;
-    private int textureLocationHandle;
-    private int normalMapLocationHandle;
+    protected int positionHandle;
+    protected int textCoordHandle;
+    protected int mvMatrixHandle;
+    protected int mvpMatrixHandle;
+    protected int textureLocationHandle;
+    protected int normalMapLocationHandle;
 
     public Scene(Program program, World world) {
         this.program = program;
@@ -51,7 +51,7 @@ public abstract class Scene {
         program.use();
     }
 
-    private void getHandles() {
+    protected void getHandles() {
         positionHandle = GLES30.glGetAttribLocation(program.getProgramHandle(), "a_Position");
         textCoordHandle = GLES30.glGetAttribLocation(program.getProgramHandle(), "a_TextCoord");
         mvMatrixHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_MVMatrix");
