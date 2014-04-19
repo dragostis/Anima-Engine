@@ -1,6 +1,10 @@
-package com.ideas.anima.engine.graphics;
+package com.ideas.anima.engine.graphics.worlds;
 
 import com.ideas.anima.engine.Game;
+import com.ideas.anima.engine.graphics.FramebufferObject;
+import com.ideas.anima.engine.graphics.Program;
+import com.ideas.anima.engine.graphics.Scene;
+import com.ideas.anima.engine.graphics.World;
 import com.ideas.anima.engine.graphics.objects.Camera;
 import com.ideas.anima.engine.graphics.objects.RenderedObject;
 
