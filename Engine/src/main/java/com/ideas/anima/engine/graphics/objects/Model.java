@@ -29,7 +29,7 @@ public class Model extends RenderedObject {
     @Override
     protected void drawObject(Scene scene) {
         texture.bind(0, scene.getTextureLocationHandle());
-//        normalMap.bind(1, scene.getNormalMapLocationHandle());
+        normalMap.bind(1, scene.getNormalMapLocationHandle());
 
         vertices.draw(scene);
     }

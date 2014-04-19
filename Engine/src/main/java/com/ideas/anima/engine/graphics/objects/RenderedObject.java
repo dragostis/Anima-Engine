@@ -38,7 +38,11 @@ public abstract class RenderedObject extends GameObject {
         updateModelMatrix();
 
         Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getViewMatrix(), 0, modelMatrix, 0);
-        Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getProjectionMatrix(), 0, modelMatrix, 0);
+
+        GLES30.glUniformMatrix4fv(scene.getMvMatrixHandle(), 1, false, modelMatrix, 0);
+
+        Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getProjectionMatrix(), 0, modelMatrix,
+                0);
 
         GLES30.glUniformMatrix4fv(scene.getMvpMatrixHandle(), 1, false, modelMatrix, 0);
 
