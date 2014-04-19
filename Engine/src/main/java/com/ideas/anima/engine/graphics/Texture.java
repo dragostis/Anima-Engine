@@ -31,12 +31,12 @@ public class Texture {
             GLES30.glTexImage2D(
                     GLES30.GL_TEXTURE_2D,
                     0,
-                    depth ? GLES30.GL_DEPTH_COMPONENT : GLES30.GL_RGBA8,
+                    depth ? GLES30.GL_DEPTH_COMPONENT24 : GLES30.GL_RGBA8,
                     width,
                     height,
                     0,
                     depth ? GLES30.GL_DEPTH_COMPONENT : GLES30.GL_RGBA,
-                    GLES30.GL_UNSIGNED_SHORT,
+                    depth ? GLES30.GL_UNSIGNED_INT : GLES30.GL_UNSIGNED_BYTE,
                     null
             );
 
