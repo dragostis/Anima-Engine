@@ -7,8 +7,12 @@ public abstract class Scene {
     private World world;
     protected int positionHandle;
     protected int textCoordHandle;
-    protected int mvMatrixHandle;
+    protected int mMatrixHandle;
     protected int mvpMatrixHandle;
+    protected int inverseVPMatrixHandle;
+    protected int ambientHandle;
+    protected int diffuseHandle;
+    protected int specularHandle;
     protected int textureLocationHandle;
     protected int normalMapLocationHandle;
 
@@ -31,12 +35,28 @@ public abstract class Scene {
         return textCoordHandle;
     }
 
-    public int getMvMatrixHandle() {
-        return mvMatrixHandle;
+    public int getMMatrixHandle() {
+        return mMatrixHandle;
     }
 
     public int getMvpMatrixHandle() {
         return mvpMatrixHandle;
+    }
+
+    public int getInverseVPMatrixHandle() {
+        return inverseVPMatrixHandle;
+    }
+
+    public int getAmbientHandle() {
+        return ambientHandle;
+    }
+
+    public int getDiffuseHandle() {
+        return diffuseHandle;
+    }
+
+    public int getSpecularHandle() {
+        return specularHandle;
     }
 
     public int getTextureLocationHandle() {
@@ -54,8 +74,13 @@ public abstract class Scene {
     protected void getHandles() {
         positionHandle = GLES30.glGetAttribLocation(program.getProgramHandle(), "a_Position");
         textCoordHandle = GLES30.glGetAttribLocation(program.getProgramHandle(), "a_TextCoord");
-        mvMatrixHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_MVMatrix");
+        mMatrixHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_MMatrix");
         mvpMatrixHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_MVPMatrix");
+        inverseVPMatrixHandle = GLES30.glGetUniformLocation(program.getProgramHandle(),
+                "u_IVPMatrix");
+        ambientHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_AmbientColor");
+        diffuseHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_DiffuseColor");
+        specularHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_SpecularColor");
         textureLocationHandle = GLES30.glGetUniformLocation(program.getProgramHandle(),
                 "u_Texture");
         normalMapLocationHandle = GLES30.glGetUniformLocation(program.getProgramHandle(),
