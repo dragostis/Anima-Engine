@@ -39,6 +39,19 @@ public class Vector {
     }
 
     /**
+     * Creates a 3D vector from another 3D vector.
+     * <p/>
+     * Note: The y axis is the height.
+     *
+     * @param vector to be copied
+     */
+    public Vector(Vector vector) {
+        this.x = vector.x;
+        this.y = vector.y;
+        this.z = vector.z;
+    }
+
+    /**
      * Creates a 2D vector.
      *
      * @param x coordinate on the x axis
