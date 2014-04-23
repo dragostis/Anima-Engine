@@ -22,6 +22,10 @@ public abstract class RenderedObject extends GameObject {
         updateModelMatrix();
     }
 
+    public float[] getModelMatrix() {
+        return modelMatrix;
+    }
+
     protected void updateModelMatrix() {
         Matrix.setIdentityM(modelMatrix, 0);
 
@@ -37,14 +41,17 @@ public abstract class RenderedObject extends GameObject {
     public void draw(Scene scene) {
         updateModelMatrix();
 
-        Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getViewMatrix(), 0, modelMatrix, 0);
+        if (scene.getMMatrixHandle() != -1) {
+            GLES30.glUniformMatrix4fv(scene.getMMatrixHandle(), 1, false, modelMatrix, 0);
+        }
 
-        GLES30.glUniformMatrix4fv(scene.getMvMatrixHandle(), 1, false, modelMatrix, 0);
+        if (scene.getMvpMatrixHandle() != -1) {
+            Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getViewMatrix(), 0, modelMatrix, 0);
+            Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getProjectionMatrix(), 0,
+                    modelMatrix, 0);
 
-        Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getProjectionMatrix(), 0, modelMatrix,
-                0);
-
-        GLES30.glUniformMatrix4fv(scene.getMvpMatrixHandle(), 1, false, modelMatrix, 0);
+            GLES30.glUniformMatrix4fv(scene.getMvpMatrixHandle(), 1, false, modelMatrix, 0);
+        }
 
         drawObject(scene);
     }
