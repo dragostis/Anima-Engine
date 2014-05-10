@@ -72,6 +72,13 @@ public abstract class World {
         this.far = far;
     }
 
+    public int getWidth() {
+        return getGame().glView.getWidth();
+    }
+
+    public int getHeight() {
+        return getGame().glView.getHeight();
+    }
 
     protected void computeMatrices() {
         viewMatrix = camera.getViewMatrix();
