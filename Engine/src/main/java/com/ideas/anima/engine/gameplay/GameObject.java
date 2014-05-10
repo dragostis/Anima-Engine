@@ -1,20 +1,21 @@
 package com.ideas.anima.engine.gameplay;
 
+import com.ideas.anima.engine.graphics.Quaternion;
 import com.ideas.anima.engine.graphics.Vector;
 
 public class GameObject {
     private Vector position;
-    private Vector rotation;
+    private Quaternion rotation;
     private Vector scale;
 
     public GameObject() {
-        this(new Vector(), new Vector(), new Vector(1.0f));
+        this(new Vector(), new Vector(1.0f), new Quaternion());
     }
 
-    public GameObject(Vector position, Vector rotation, Vector scale) {
+    public GameObject(Vector position, Vector scale, Quaternion rotation) {
         this.position = position;
-        this.rotation = rotation;
         this.scale = scale;
+        this.rotation = rotation;
     }
 
     public Vector getPosition() {
@@ -25,11 +26,11 @@ public class GameObject {
         this.position = position;
     }
 
-    public Vector getRotation() {
+    public Quaternion getRotation() {
         return rotation;
     }
 
-    public void setRotation(Vector rotation) {
+    public void setRotation(Quaternion rotation) {
         this.rotation = rotation;
     }
 
