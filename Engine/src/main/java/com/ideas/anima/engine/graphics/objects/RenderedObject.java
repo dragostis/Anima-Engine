@@ -10,6 +10,7 @@ import com.ideas.anima.engine.graphics.Vector;
 
 public abstract class RenderedObject extends GameObject {
     private float[] modelMatrix = new float[16];
+    private boolean shadowCaster;
 
     protected RenderedObject() {
         super();
@@ -25,6 +26,12 @@ public abstract class RenderedObject extends GameObject {
 
     public float[] getModelMatrix() {
         return modelMatrix;
+    public boolean isShadowCaster() {
+        return shadowCaster;
+    }
+
+    public void setShadowCaster(boolean shadowCaster) {
+        this.shadowCaster = shadowCaster;
     }
 
     protected void updateModelMatrix() {
