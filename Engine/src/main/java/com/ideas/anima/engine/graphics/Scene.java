@@ -108,28 +108,32 @@ public abstract class Scene {
     public abstract void getUniformHandles();
 
     public void drawScene() {
-        GLES30.glUniform2f(
-                screenRatioHandle,
-                1.0f / getWorld().getWidth(),
-                1.0f / getWorld().getHeight()
-        );
+        if (screenRatioHandle != -1) {
+            GLES30.glUniform2f(
+                    screenRatioHandle,
+                    1.0f / getWorld().getWidth(),
+                    1.0f / getWorld().getHeight()
+            );
+        }
 
-        float[] projectionMatrix = getWorld().getProjectionMatrix();
+        if (projectionVectorHandle != -1) {
+            float[] projectionMatrix = getWorld().getProjectionMatrix();
 
-        GLES30.glUniform4f(
-                projectionVectorHandle,
-                -2.0f / projectionMatrix[0],
-                -2.0f / projectionMatrix[5],
-                (1.0f - projectionMatrix[8]) / projectionMatrix[0],
-                (1.0f + projectionMatrix[9]) / projectionMatrix[5]
-        );
+            GLES30.glUniform4f(
+                    projectionVectorHandle,
+                    -2.0f / projectionMatrix[0],
+                    -2.0f / projectionMatrix[5],
+                    (1.0f - projectionMatrix[8]) / projectionMatrix[0],
+                    (1.0f + projectionMatrix[9]) / projectionMatrix[5]
+            );
 
-        GLES30.glUniform3f(
-                clipVectorHandle,
-                -getWorld().getNear() * getWorld().getFar(),
-                getWorld().getNear() - getWorld().getFar(),
-                getWorld().getFar()
-        );
+            GLES30.glUniform3f(
+                    clipVectorHandle,
+                    -getWorld().getNear() * getWorld().getFar(),
+                    getWorld().getNear() - getWorld().getFar(),
+                    getWorld().getFar()
+            );
+        }
 
         draw();
     }
