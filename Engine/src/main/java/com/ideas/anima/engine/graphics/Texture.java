@@ -74,6 +74,11 @@ public class Texture {
             GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER,
                     GLES30.GL_LINEAR);
 
+            GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_S,
+                    GLES30.GL_CLAMP_TO_EDGE);
+            GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_T,
+                    GLES30.GL_CLAMP_TO_EDGE);
+
             GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
 
             bitmap.recycle();
@@ -88,6 +93,24 @@ public class Texture {
 
     public int getTextureHandle() {
         return textureHandle;
+    }
+
+    public void setRepeat(boolean repeat) {
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureHandle);
+
+        if (repeat) {
+            GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_S,
+                    GLES30.GL_REPEAT);
+            GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_T,
+                    GLES30.GL_REPEAT);
+        } else {
+            GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_S,
+                    GLES30.GL_CLAMP_TO_EDGE);
+            GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_T,
+                    GLES30.GL_CLAMP_TO_EDGE);
+        }
+
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
     }
 
     public void bind(int position, int textureLocationHandle) {
