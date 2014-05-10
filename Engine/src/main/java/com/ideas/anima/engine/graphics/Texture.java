@@ -7,6 +7,8 @@ import android.opengl.GLUtils;
 
 import com.ideas.anima.engine.data.blocks.TextureBlock;
 
+import java.io.InputStream;
+
 public class Texture {
     private int textureHandle;
 
@@ -49,6 +51,10 @@ public class Texture {
     }
 
     public Texture(TextureBlock textureBlock) {
+        this(textureBlock.getInputStream());
+    }
+
+    public Texture(InputStream inputStream) {
         final int[] textureHandleArray = new int[1];
 
         GLES30.glGenTextures(1, textureHandleArray, 0);
@@ -57,7 +63,7 @@ public class Texture {
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inScaled = false;
 
-            final Bitmap bitmap = BitmapFactory.decodeStream(textureBlock.getInputStream());
+            final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
             GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureHandleArray[0]);
 
