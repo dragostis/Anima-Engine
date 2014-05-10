@@ -1,13 +1,13 @@
-package com.ideas.anima.engine.graphics;
+package com.ideas.anima.engine.graphics.scenes;
 
 import android.opengl.GLES30;
 
 import com.ideas.anima.engine.data.blocks.VerticesBlock;
-import com.ideas.anima.engine.graphics.IndexbufferVertices;
+import com.ideas.anima.engine.graphics.DisposableVertices;
 import com.ideas.anima.engine.graphics.Program;
 import com.ideas.anima.engine.graphics.Scene;
 import com.ideas.anima.engine.graphics.Texture;
-import com.ideas.anima.engine.graphics.Vertices;
+import com.ideas.anima.engine.graphics.Vector;
 import com.ideas.anima.engine.graphics.World;
 
 public abstract class PostProcessingScene extends Scene {
