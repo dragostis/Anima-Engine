@@ -2,14 +2,19 @@ package com.ideas.anima.engine.graphics;
 
 import android.opengl.GLES30;
 
+import com.ideas.anima.engine.graphics.Program;
+import com.ideas.anima.engine.graphics.World;
+
 public abstract class Scene {
     protected Program program;
     private World world;
     protected int positionHandle;
     protected int textCoordHandle;
-    protected int mMatrixHandle;
+    protected int mvMatrixHandle;
     protected int mvpMatrixHandle;
-    protected int inverseVPMatrixHandle;
+    protected int projectionVectorHandle;
+    protected int clipVectorHandle;
+    protected int screenRatioHandle;
     protected int ambientHandle;
     protected int diffuseHandle;
     protected int specularHandle;
@@ -35,16 +40,24 @@ public abstract class Scene {
         return textCoordHandle;
     }
 
-    public int getMMatrixHandle() {
-        return mMatrixHandle;
+    public int getMvMatrixHandle() {
+        return mvMatrixHandle;
     }
 
     public int getMvpMatrixHandle() {
         return mvpMatrixHandle;
     }
 
-    public int getInverseVPMatrixHandle() {
-        return inverseVPMatrixHandle;
+    public int getProjectionVectorHandle() {
+        return projectionVectorHandle;
+    }
+
+    public int getClipVectorHandle() {
+        return clipVectorHandle;
+    }
+
+    public int getScreenRatioHandle() {
+        return screenRatioHandle;
     }
 
     public int getAmbientHandle() {
@@ -74,10 +87,13 @@ public abstract class Scene {
     protected void getHandles() {
         positionHandle = GLES30.glGetAttribLocation(program.getProgramHandle(), "a_Position");
         textCoordHandle = GLES30.glGetAttribLocation(program.getProgramHandle(), "a_TextCoord");
-        mMatrixHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_MMatrix");
+        mvMatrixHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_MVMatrix");
         mvpMatrixHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_MVPMatrix");
-        inverseVPMatrixHandle = GLES30.glGetUniformLocation(program.getProgramHandle(),
-                "u_IVPMatrix");
+        projectionVectorHandle = GLES30.glGetUniformLocation(program.getProgramHandle(),
+                "u_ProjectionVector");
+        clipVectorHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_ClipVector");
+        screenRatioHandle = GLES30.glGetUniformLocation(program.getProgramHandle(),
+                "u_ScreenRatio");
         ambientHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_AmbientColor");
         diffuseHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_DiffuseColor");
         specularHandle = GLES30.glGetUniformLocation(program.getProgramHandle(), "u_SpecularColor");
@@ -91,5 +107,32 @@ public abstract class Scene {
 
     public abstract void getUniformHandles();
 
-    public abstract void draw();
+    public void drawScene() {
+        GLES30.glUniform2f(
+                screenRatioHandle,
+                1.0f / getWorld().getWidth(),
+                1.0f / getWorld().getHeight()
+        );
+
+        float[] projectionMatrix = getWorld().getProjectionMatrix();
+
+        GLES30.glUniform4f(
+                projectionVectorHandle,
+                -2.0f / projectionMatrix[0],
+                -2.0f / projectionMatrix[5],
+                (1.0f - projectionMatrix[8]) / projectionMatrix[0],
+                (1.0f + projectionMatrix[9]) / projectionMatrix[5]
+        );
+
+        GLES30.glUniform3f(
+                clipVectorHandle,
+                -getWorld().getNear() * getWorld().getFar(),
+                getWorld().getNear() - getWorld().getFar(),
+                getWorld().getFar()
+        );
+
+        draw();
+    }
+
+    protected abstract void draw();
 }
