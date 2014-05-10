@@ -4,6 +4,7 @@ import android.opengl.GLES30;
 
 import com.ideas.anima.engine.data.blocks.ModelBlock;
 import com.ideas.anima.engine.graphics.IndexbufferVertices;
+import com.ideas.anima.engine.graphics.Quaternion;
 import com.ideas.anima.engine.graphics.Scene;
 import com.ideas.anima.engine.graphics.Texture;
 import com.ideas.anima.engine.graphics.Vector;
@@ -23,8 +24,8 @@ public class Model extends RenderedObject {
         normalMap = new Texture(modelBlock.getNormalMapBlock());
     }
 
-    public Model(Vector position, Vector rotation, Vector scale, ModelBlock modelBlock) {
-        super(position, rotation, scale);
+    public Model(Vector position, Vector scale, Quaternion rotation, ModelBlock modelBlock) {
+        super(position, scale, rotation);
 
         vertices = new IndexbufferVertices(modelBlock.getVerticesBlock());
         texture = new Texture(modelBlock.getTextureBlock());

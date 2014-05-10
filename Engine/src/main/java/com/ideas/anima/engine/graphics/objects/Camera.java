@@ -3,6 +3,7 @@ package com.ideas.anima.engine.graphics.objects;
 import android.opengl.Matrix;
 
 import com.ideas.anima.engine.gameplay.GameObject;
+import com.ideas.anima.engine.graphics.Quaternion;
 import com.ideas.anima.engine.graphics.Vector;
 
 public class Camera extends GameObject {
@@ -15,8 +16,8 @@ public class Camera extends GameObject {
         this.up = up;
     }
 
-    public Camera(Vector position, Vector rotation, Vector scale, GameObject look, Vector up) {
-        super(position, rotation, scale);
+    public Camera(Vector position, Vector scale, Quaternion rotation, GameObject look, Vector up) {
+        super(position, scale, rotation);
 
         this.look = look;
         this.up = up;

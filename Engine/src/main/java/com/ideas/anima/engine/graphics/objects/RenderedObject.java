@@ -4,6 +4,7 @@ import android.opengl.GLES30;
 import android.opengl.Matrix;
 
 import com.ideas.anima.engine.gameplay.GameObject;
+import com.ideas.anima.engine.graphics.Quaternion;
 import com.ideas.anima.engine.graphics.Scene;
 import com.ideas.anima.engine.graphics.Vector;
 
@@ -16,8 +17,8 @@ public abstract class RenderedObject extends GameObject {
         updateModelMatrix();
     }
 
-    protected RenderedObject(Vector position, Vector rotation, Vector scale) {
-        super(position, rotation, scale);
+    protected RenderedObject(Vector position, Vector scale, Quaternion rotation) {
+        super(position, scale, rotation);
 
         updateModelMatrix();
     }
