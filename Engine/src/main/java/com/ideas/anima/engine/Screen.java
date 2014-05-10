@@ -4,10 +4,18 @@ import com.ideas.anima.engine.graphics.World;
 
 public abstract class Screen {
     protected final Game game;
-    protected World world;
+    private World world;
 
     public Screen(Game game) {
         this.game = game;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public void draw() {
