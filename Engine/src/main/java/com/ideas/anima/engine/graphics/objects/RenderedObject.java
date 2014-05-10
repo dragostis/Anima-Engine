@@ -24,8 +24,6 @@ public abstract class RenderedObject extends GameObject {
         updateModelMatrix();
     }
 
-    public float[] getModelMatrix() {
-        return modelMatrix;
     public boolean isShadowCaster() {
         return shadowCaster;
     }
@@ -39,22 +37,21 @@ public abstract class RenderedObject extends GameObject {
 
         Matrix.translateM(modelMatrix, 0, getPosition().x, getPosition().y, getPosition().z);
 
-        float max = Math.max(getRotation().x, Math.max(getRotation().y, getRotation().z));
-        if (max != 0.0f) Matrix.rotateM(modelMatrix, 0, max, getRotation().x / max,
-                getRotation().y / max, getRotation().z / max);
-
         Matrix.scaleM(modelMatrix, 0, getScale().x, getScale().y, getScale().z);
+
+        Matrix.multiplyMM(modelMatrix, 0, modelMatrix, 0, getRotation().getRotationMatrix(), 0);
     }
 
     public void draw(Scene scene) {
         updateModelMatrix();
 
-        if (scene.getMMatrixHandle() != -1) {
-            GLES30.glUniformMatrix4fv(scene.getMMatrixHandle(), 1, false, modelMatrix, 0);
-        }
-
         if (scene.getMvpMatrixHandle() != -1) {
             Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getViewMatrix(), 0, modelMatrix, 0);
+
+            if (scene.getMvMatrixHandle() != -1) {
+                GLES30.glUniformMatrix4fv(scene.getMvMatrixHandle(), 1, false, modelMatrix, 0);
+            }
+
             Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getProjectionMatrix(), 0,
                     modelMatrix, 0);
 
