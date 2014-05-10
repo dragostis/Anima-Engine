@@ -14,7 +14,7 @@ public class Model extends RenderedObject {
     private Vertices vertices;
     private Texture texture;
     private Texture normalMap;
-    private Vector ambientColor = new Vector(0.05f);
+    private Vector ambientColor = new Vector(0.01f);
     private Vector diffuseColor = new Vector(0.7f);
     private Vector specularColor = new Vector(0.0f);
 
