@@ -34,6 +34,7 @@ public class Touch implements OnTouchListener {
         this.scaleY = scaleY;
     }
 
+    @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         synchronized (this) {
             TouchEvent touchEvent = touchEventPool.newObject();
