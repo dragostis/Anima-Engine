@@ -18,13 +18,6 @@ public class PointLight extends RenderedObject {
         setScale(new Vector(radius * ERROR));
     }
 
-    public PointLight(Vector position, Vector rotation, Vector scale, Vector color, float radius) {
-        super(position, rotation, scale.multiply(radius));
-
-        this.color = color;
-        this.radius = radius;
-    }
-
     public Vector getColor() {
         return color;
     }
