@@ -39,10 +39,10 @@ public class SimpleWorld extends World {
     }
 
     @Override
-    public void draw() {
+    public void drawWorld() {
         FramebufferObject.unbind(getGame().glView.getWidth(), getGame().glView.getHeight());
 
         simpleScene.use();
-        simpleScene.draw();
+        simpleScene.drawScene();
     }
 }
