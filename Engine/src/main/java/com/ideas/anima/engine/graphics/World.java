@@ -15,9 +15,7 @@ public abstract class World {
     private Camera camera;
     private List<RenderedObject> renderedObjects;
     private float[] viewMatrix;
-    private float[] projectionMatrix = new float[16];
-    private float near = 1.0f;
-    private float far = 20.0f;
+    private float[] projectionMatrix;
 
     public World(Game game, Camera camera) {
         this.game = game;
@@ -56,22 +54,6 @@ public abstract class World {
         return projectionMatrix;
     }
 
-    public float getNear() {
-        return near;
-    }
-
-    public void setNear(float near) {
-        this.near = near;
-    }
-
-    public float getFar() {
-        return far;
-    }
-
-    public void setFar(float far) {
-        this.far = far;
-    }
-
     public int getWidth() {
         return getGame().glView.getWidth();
     }
@@ -82,10 +64,8 @@ public abstract class World {
 
     protected void computeMatrices() {
         viewMatrix = camera.getViewMatrix();
-
-        float ratio = (float) game.glView.getWidth() / game.glView.getHeight();
-
-        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1.0f, 1.0f, near, far);
+        projectionMatrix = camera.getProjectionMatrix((float) game.glView.getWidth()
+                / game.glView.getHeight());
     }
 
     public void draw() {

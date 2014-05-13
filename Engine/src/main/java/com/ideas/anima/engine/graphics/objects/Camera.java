@@ -9,7 +9,10 @@ import com.ideas.anima.engine.graphics.Vector;
 public class Camera extends GameObject {
     private GameObject look;
     private Vector up;
+    private float near;
+    private float far;
     private float[] viewMatrix = new float[16];
+    private float[] projectionMatrix = new float[16];
 
     public Camera(GameObject look, Vector up) {
         this.look = look;
@@ -39,6 +42,22 @@ public class Camera extends GameObject {
         this.up = up;
     }
 
+    public float getNear() {
+        return near;
+    }
+
+    public void setNear(float near) {
+        this.near = near;
+    }
+
+    public float getFar() {
+        return far;
+    }
+
+    public void setFar(float far) {
+        this.far = far;
+    }
+
     public void rotateCamera(float pitch, float yaw) {
         Quaternion pitchQuaternion = new Quaternion(Vector.cross(up, Vector.subtract(
                 look.getPosition(), getPosition())).normalize(), pitch);
@@ -66,5 +85,11 @@ public class Camera extends GameObject {
         );
 
         return viewMatrix;
+    }
+
+    public float[] getProjectionMatrix(float ratio) {
+        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1.0f, 1.0f, near, far);
+
+        return projectionMatrix;
     }
 }
