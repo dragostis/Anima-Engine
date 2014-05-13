@@ -22,14 +22,14 @@ public abstract class DirectionalLightWorld extends World {
     protected DirectionalLightWorld(Game game, Camera camera) {
         super(game, camera);
 
-        farShadowMap = getFar();
+        farShadowMap = getCamera().getFar();
     }
 
     protected DirectionalLightWorld(Game game, Camera camera, DirectionalLight directionalLight) {
         super(game, camera);
 
         this.directionalLight = directionalLight;
-        farShadowMap = getFar();
+        farShadowMap = getCamera().getFar();
     }
 
     public DirectionalLight getDirectionalLight() {
@@ -232,7 +232,8 @@ public abstract class DirectionalLightWorld extends World {
 
         float ratio = (float) getGame().glView.getWidth() / getGame().glView.getHeight();
 
-        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1.0f, 1.0f, getNear(), farShadowMap);
+        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1.0f, 1.0f, getCamera().getNear(),
+                farShadowMap);
 
         return projectionMatrix;
     }

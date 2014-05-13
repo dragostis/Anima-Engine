@@ -129,9 +129,9 @@ public abstract class Scene {
 
             GLES30.glUniform3f(
                     clipVectorHandle,
-                    -getWorld().getNear() * getWorld().getFar(),
-                    getWorld().getNear() - getWorld().getFar(),
-                    getWorld().getFar()
+                    -getWorld().getCamera().getNear() * getWorld().getCamera().getFar(),
+                    getWorld().getCamera().getNear() - getWorld().getCamera().getFar(),
+                    getWorld().getCamera().getFar()
             );
         }
 

@@ -9,8 +9,8 @@ import com.ideas.anima.engine.graphics.Vector;
 public class Camera extends GameObject {
     private GameObject look;
     private Vector up;
-    private float near;
-    private float far;
+    private float near = 1.0f;
+    private float far = 20.0f;
     private float[] viewMatrix = new float[16];
     private float[] projectionMatrix = new float[16];
 
@@ -70,12 +70,15 @@ public class Camera extends GameObject {
     }
 
     public float[] getViewMatrix() {
+        Vector eye = Vector.subtract(look.getPosition(), getPosition()).normalize().multiply(-near);
+        eye.add(getPosition());
+
         Matrix.setLookAtM(
                 viewMatrix,
                 0,
-                getPosition().x,
-                getPosition().y,
-                getPosition().z,
+                eye.x,
+                eye.y,
+                eye.z,
                 look.getPosition().x,
                 look.getPosition().y,
                 look.getPosition().z,
