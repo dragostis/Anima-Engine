@@ -1,7 +1,6 @@
 package com.ideas.anima.engine.gameplay.physics;
 
 import com.ideas.anima.engine.gameplay.GameObject;
-import com.ideas.anima.engine.graphics.Quaternion;
 import com.ideas.anima.engine.graphics.Vector;
 
 import java.util.ArrayList;
