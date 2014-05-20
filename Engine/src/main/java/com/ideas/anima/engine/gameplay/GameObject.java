@@ -1,5 +1,6 @@
 package com.ideas.anima.engine.gameplay;
 
+import com.ideas.anima.engine.gameplay.physics.Body;
 import com.ideas.anima.engine.graphics.Quaternion;
 import com.ideas.anima.engine.graphics.Vector;
 
@@ -7,6 +8,7 @@ public class GameObject {
     private Vector position;
     private Quaternion rotation;
     private Vector scale;
+    private Body body;
 
     public GameObject() {
         this(new Vector(), new Vector(1.0f), new Quaternion());
@@ -40,5 +42,15 @@ public class GameObject {
 
     public void setScale(Vector scale) {
         this.scale = scale;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
+
+        body.setObject(this);
     }
 }
