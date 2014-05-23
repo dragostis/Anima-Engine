@@ -242,6 +242,6 @@ public abstract class DirectionalLightWorld extends World {
     protected void computeMatrices() {
         super.computeMatrices();
 
-        computeShadowMapMatrices();
+        if (directionalLight != null) computeShadowMapMatrices();
     }
 }
