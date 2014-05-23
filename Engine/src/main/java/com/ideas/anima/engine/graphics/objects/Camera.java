@@ -59,8 +59,8 @@ public class Camera extends GameObject {
     }
 
     public void rotateCamera(float pitch, float yaw) {
-        Quaternion pitchQuaternion = new Quaternion(Vector.cross(up, Vector.subtract(
-                look.getPosition(), getPosition())).normalize(), pitch);
+        Quaternion pitchQuaternion = new Quaternion(Vector.cross(Vector.subtract(look.getPosition(),
+                getPosition()), up).normalize(), pitch);
         Quaternion yawQuaternion = new Quaternion(new Vector(0.0f, -1.0f, 0.0f), yaw);
 
         yawQuaternion.multiply(pitchQuaternion);
