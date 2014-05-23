@@ -26,6 +26,14 @@ public class Input {
         return touch.getTouchY();
     }
 
+    public int getTouchDeltaX() {
+        return touch.getDeltaX();
+    }
+
+    public int getTouchDeltaY() {
+        return touch.getDeltaY();
+    }
+
     public float getAccelX() {
         return accelerometerHandler.getAccelerationX();
     }
