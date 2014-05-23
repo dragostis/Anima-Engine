@@ -9,6 +9,7 @@ import com.ideas.anima.engine.graphics.Scene;
 import com.ideas.anima.engine.graphics.Vector;
 
 public abstract class RenderedObject extends GameObject {
+    private float[] rotationMatrix = new float[16];
     private float[] modelMatrix = new float[16];
     private boolean shadowCaster;
 
@@ -39,7 +40,11 @@ public abstract class RenderedObject extends GameObject {
 
         Matrix.scaleM(modelMatrix, 0, getScale().x, getScale().y, getScale().z);
 
-        Matrix.multiplyMM(modelMatrix, 0, modelMatrix, 0, getRotation().getRotationMatrix(), 0);
+        System.arraycopy(getRotation().getRotationMatrix(), 0, rotationMatrix, 0, 16);
+
+        Matrix.multiplyMM(rotationMatrix, 0, modelMatrix, 0, rotationMatrix, 0);
+
+        System.arraycopy(rotationMatrix, 0, modelMatrix, 0, 16);
     }
 
     public void draw(Scene scene) {
