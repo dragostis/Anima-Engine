@@ -1,33 +1,32 @@
 package com.ideas.anima.engine;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
 
-public class Pool<Type> {
-    private final List<Type> freeObjects;
-    private final PoolObjectFactory<Type> factory;
+public class Pool<T> {
+    private final Stack<T> freeObjects;
+    private final PoolObjectFactory<T> factory;
     private final int maxSize;
 
-    public Pool(PoolObjectFactory<Type> factory, int maxSize) {
+    public Pool(PoolObjectFactory<T> factory, int maxSize) {
         this.factory = factory;
         this.maxSize = maxSize;
-        freeObjects = new ArrayList<Type>(maxSize);
+
+        freeObjects = new Stack<>();
     }
 
-    public Type newObject() {
-        Type object;
-
-        if (freeObjects.size() == 0) object = factory.createObject();
-        else object = freeObjects.remove(freeObjects.size() - 1);
-
-        return object;
+    public T newObject() {
+        if (freeObjects.size() == 0) {
+            return factory.createObject();
+        } else {
+            return freeObjects.pop();
+        }
     }
 
-    public void free(Type object) {
+    public void free(T object) {
         if (freeObjects.size() < maxSize) freeObjects.add(object);
     }
 
-    public interface PoolObjectFactory<Type> {
-        public Type createObject();
+    public interface PoolObjectFactory<T> {
+        public T createObject();
     }
 }
