@@ -19,6 +19,8 @@ public class Model extends RenderedObject {
     private Vector specularColor = new Vector(0.0f);
 
     public Model(ModelBlock modelBlock) {
+        super();
+
         vertices = new IndexbufferVertices(modelBlock.getVerticesBlock());
         texture = new Texture(modelBlock.getTextureBlock());
         normalMap = new Texture(modelBlock.getNormalMapBlock());
