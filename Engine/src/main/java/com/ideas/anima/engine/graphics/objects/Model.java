@@ -34,6 +34,17 @@ public class Model extends RenderedObject {
         normalMap = new Texture(modelBlock.getNormalMapBlock());
     }
 
+    public Model(Model model) {
+        super();
+
+        this.vertices = model.vertices;
+        this.texture = model.texture;
+        this.normalMap = model.normalMap;
+        this.ambientColor = model.ambientColor;
+        this.diffuseColor = model.diffuseColor;
+        this.specularColor = model.specularColor;
+    }
+
     public Vector getAmbientColor() {
         return ambientColor;
     }
