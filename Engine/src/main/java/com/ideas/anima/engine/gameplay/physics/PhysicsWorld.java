@@ -1,6 +1,7 @@
 package com.ideas.anima.engine.gameplay.physics;
 
 import com.ideas.anima.engine.gameplay.GameObject;
+import com.ideas.anima.engine.graphics.Quaternion;
 import com.ideas.anima.engine.graphics.Vector;
 
 import java.util.ArrayList;
@@ -8,7 +9,6 @@ import java.util.List;
 
 public class PhysicsWorld {
     private List<GameObject> objects = new ArrayList<>();
-
 
     public PhysicsWorld(Vector gravity) {
         initialize(gravity.x, gravity.y, gravity.z);

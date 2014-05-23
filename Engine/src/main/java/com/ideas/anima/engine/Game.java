@@ -15,6 +15,10 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public abstract class Game extends Activity implements GLSurfaceView.Renderer {
+    static {
+        System.loadLibrary("anima");
+    }
+
     public GLSurfaceView glView;
     public IO io;
     public Input input;
