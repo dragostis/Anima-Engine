@@ -15,10 +15,10 @@ public class Quaternion {
 
         float sin = (float) Math.sin(Math.toRadians(angle / 2.0f));
 
-        x = -direction.x * sin;
-        y =  direction.y * sin;
-        z =  direction.z * sin;
-        w =  (float) Math.cos(Math.toRadians(angle / 2.0f));
+        x = direction.x * sin;
+        y = direction.y * sin;
+        z = direction.z * sin;
+        w = (float) Math.cos(Math.toRadians(angle / 2.0f));
     }
 
     public float getX() {
@@ -54,10 +54,16 @@ public class Quaternion {
     }
 
     public void multiply(Quaternion quaternion) {
-        x = quaternion.w * x + quaternion.x * w + quaternion.y * z - quaternion.z * y;
-        y = quaternion.w * y + quaternion.x * z + quaternion.y * w - quaternion.z * x;
-        z = quaternion.w * z + quaternion.x * y + quaternion.y * x - quaternion.z * w;
-        w = quaternion.w * w + quaternion.x * x + quaternion.y * y - quaternion.z * z;
+        float newX = quaternion.w * x + quaternion.x * w + quaternion.y * z - quaternion.z * y;
+        float newY = quaternion.w * y - quaternion.x * z + quaternion.y * w + quaternion.z * x;
+        float newZ = quaternion.w * z + quaternion.x * y - quaternion.y * x + quaternion.z * w;
+        float newW = quaternion.w * w - quaternion.x * x - quaternion.y * y - quaternion.z * z;
+
+        this.x = newX;
+        this.y = newY;
+        this.z = newZ;
+        this.w = newW;
+
     }
 
     public float[] getRotationMatrix() {
