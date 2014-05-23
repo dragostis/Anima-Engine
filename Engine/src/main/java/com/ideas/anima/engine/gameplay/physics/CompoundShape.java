@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompoundShape implements Shape {
-    private List<PrimitiveShape> shapes = new ArrayList();
+    private List<PrimitiveShape> shapes = new ArrayList<>();
     private List<Vector> positions = new ArrayList<>();
 
     public void addShape(PrimitiveShape shape, Vector position) {
