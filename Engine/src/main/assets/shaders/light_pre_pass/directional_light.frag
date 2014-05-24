@@ -6,14 +6,14 @@ uniform sampler2D u_Texture;
 uniform sampler2D u_NormalTexture;
 uniform sampler2D u_ShadowMap;
 
-uniform vec4 u_ProjectionVector;
-uniform vec3 u_ClipVector;
+uniform highp vec4 u_ProjectionVector;
+uniform highp vec3 u_ClipVector;
 uniform highp mat4 u_SMMatrix;
 
 uniform vec3 u_LightDirection;
 uniform vec3 u_LightColor;
 
-in vec2 v_TextCoord;
+in highp vec2 v_TextCoord;
 
 layout(location = 0) out vec4 outColor0;
 layout(location = 1) out vec4 outColor1;

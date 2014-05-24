@@ -11,14 +11,14 @@ uniform vec3 u_AmbientColor;
 uniform vec3 u_DiffuseColor;
 uniform vec3 u_SpecularColor;
 
-uniform vec2 u_ScreenRatio;
+uniform highp vec2 u_ScreenRatio;
 
 in vec2 v_TextCoord;
 
 layout(location = 0) out vec4 outColor;
 
 void main() {
-    vec2 coord = gl_FragCoord.xy * u_ScreenRatio;
+    vec2 coord = (gl_FragCoord.xy + vec2(0.5)) * u_ScreenRatio;
 
     vec3 diffuse = texture(u_DiffuseTexture, coord).xyz * u_DiffuseColor;
     vec3 specular = texture(u_SpecularTexture, coord).xyz * u_SpecularColor;

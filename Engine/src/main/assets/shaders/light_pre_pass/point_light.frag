@@ -5,14 +5,14 @@ precision mediump float;
 uniform sampler2D u_DepthTexture;
 uniform sampler2D u_NormalTexture;
 
-uniform vec4 u_ProjectionVector;
-uniform vec3 u_ClipVector;
+uniform highp vec4 u_ProjectionVector;
+uniform highp vec3 u_ClipVector;
 
 uniform vec3 u_LightPosition;
 uniform vec3 u_LightColor;
 uniform float u_LightRadius;
 
-uniform vec2 u_ScreenRatio;
+uniform highp vec2 u_ScreenRatio;
 
 layout(location = 0) out vec4 outColor0;
 layout(location = 1) out vec4 outColor1;
@@ -29,7 +29,7 @@ vec3 getPosition(vec2 uv) {
 }
 
 void main() {
-    vec2 coord = gl_FragCoord.xy * u_ScreenRatio;
+    vec2 coord = (gl_FragCoord.xy + vec2(0.5)) * u_ScreenRatio;
 
     vec3 position = getPosition(coord);
 
