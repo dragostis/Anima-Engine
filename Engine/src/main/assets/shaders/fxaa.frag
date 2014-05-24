@@ -6,7 +6,7 @@ uniform sampler2D u_Texture;
 
 uniform vec2 u_ScreenRatio;
 
-in vec2 v_TextCoord;
+in highp vec2 v_TextCoord;
 
 layout(location = 0) out vec4 outColor;
 
@@ -53,7 +53,7 @@ void main() {
               texture(u_Texture, v_TextCoord + dir * (3.0/3.0 - 0.5)).xyz);
 
     float lumaB = dot(rgbB, luma);
-    
+
     if((lumaB < lumaMin) || (lumaB > lumaMax)) {
         outColor.xyz = rgbA;
     } else {
