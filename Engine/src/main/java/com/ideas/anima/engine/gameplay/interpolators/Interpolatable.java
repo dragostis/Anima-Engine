@@ -1,4 +1,4 @@
-package com.ideas.anima.engine.gameplay;
+package com.ideas.anima.engine.gameplay.interpolators;
 
 public interface Interpolatable<T> {
     public void multiply(float scalar);
