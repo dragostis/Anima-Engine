@@ -1,19 +1,16 @@
 package com.ideas.anima.engine.gameplay;
 
-import com.ideas.anima.engine.gameplay.interpolators.Interpolatable;
 import com.ideas.anima.engine.gameplay.interpolators.Mapping;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Interpolator {
-    private Interpolatable[] interpolatables;
     private List<Mapping> mappings = new ArrayList<>();
     private float totalTime;
     private float currentTime;
 
-    public Interpolator(float totalTime, Interpolatable... interpolatables) {
-        this.interpolatables = interpolatables;
+    public Interpolator(float totalTime) {
         this.totalTime = totalTime;
     }
 
