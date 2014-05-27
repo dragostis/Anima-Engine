@@ -7,6 +7,7 @@ public class Vector {
         array[0] = x;
         array[1] = y;
         array[2] = z;
+
         array[3] = 1.0f;
     }
 
@@ -25,8 +26,8 @@ public class Vector {
         this(0.0f, 0.0f, 0.0f);
     }
 
-    public Vector(float a) {
-        this(a, a, a);
+    public Vector(float scalar) {
+        this(scalar, scalar, scalar);
     }
 
     public float getX() {
@@ -65,28 +66,30 @@ public class Vector {
         return array;
     }
 
-    public Vector add(Vector a) {
-        return new Vector(array[0] + a.getX(), array[1] + a.getY(), array[2] + a.getZ());
+    public Vector add(Vector vector) {
+        return new Vector(array[0] + vector.getX(), array[1] + vector.getY(),
+                array[2] + vector.getZ());
     }
 
-    public Vector subtract(Vector a) {
-        return new Vector(array[0] - a.getX(), array[1] - a.getY(), array[2] - a.getZ());
+    public Vector subtract(Vector vector) {
+        return new Vector(array[0] - vector.getX(), array[1] - vector.getY(),
+                array[2] - vector.getZ());
     }
 
-    public float dot(Vector a) {
-        return array[0] * a.getX() + array[1] * a.getY() + array[2] * a.getZ();
+    public Vector cross(Vector vector) {
+        return new Vector(
+                array[1] * vector.getZ() - array[2] * vector.getY(),
+                array[2] * vector.getX() - array[0] * vector.getZ(),
+                array[0] * vector.getY() - array[1] * vector.getX()
+        );
+    }
+
+    public float dot(Vector vector) {
+        return array[0] * vector.getX() + array[1] * vector.getY() + array[2] * vector.getZ();
     }
 
     public Vector multiply(float scalar) {
         return new Vector(array[0] * scalar, array[1] * scalar, array[2] * scalar);
-    }
-
-    public Vector cross(Vector a) {
-        return new Vector(
-            array[1] * a.getZ() - array[2] * a.getY(),
-            array[2] * a.getX() - array[0] * a.getZ(),
-            array[0] * a.getY() - array[1] * a.getX()
-        );
     }
 
     public float length() {
