@@ -78,12 +78,12 @@ public abstract class DirectionalLightWorld extends World {
                 new Vector( 1.0f,  1.0f,  1.0f)
         };
 
-        Vector up = (new Vector(directionalLight.getDirection()));
+        Vector up = new Vector(directionalLight.getDirection());
         Vector temp = up.cross(getCamera().getLook().getPosition().subtract(getCamera().getPosition()));
         Vector look = temp.cross(up).add(getCamera().getPosition());
 
         shadowMapProjectionMatrix = new Matrix(getShadowMapProjectionMatrix()).invert();
-        shadowMapViewMatrix = new Matrix(super.getViewMatrix());
+        shadowMapViewMatrix = new Matrix(super.getViewMatrix()).invert();
 
         shadowMapProjectionMatrix.multiply(shadowMapViewMatrix);
 
