@@ -61,6 +61,10 @@ public class Vector {
         array[3] = w;
     }
 
+    public float[] getArray() {
+        return array;
+    }
+
     public Vector add(Vector a) {
         return new Vector(array[0] + a.getX(), array[1] + a.getY(), array[2] + a.getZ());
     }
@@ -75,6 +79,14 @@ public class Vector {
 
     public Vector multiply(float scalar) {
         return new Vector(array[0] * scalar, array[1] * scalar, array[2] * scalar);
+    }
+
+    public Vector cross(Vector a) {
+        return new Vector(
+            array[1] * a.getZ() - array[2] * a.getY(),
+            array[2] * a.getX() - array[0] * a.getZ(),
+            array[0] * a.getY() - array[1] * a.getX()
+        );
     }
 
     public float length() {
