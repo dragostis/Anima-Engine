@@ -54,6 +54,18 @@ public class Matrix {
         return this;
     }
 
+    public Matrix frustum(float left, float right, float bottom, float top, float near, float far) {
+        android.opengl.Matrix.frustumM(array, 0, left, right, bottom, top, near, far);
+
+        return this;
+    }
+
+    public Matrix ortho(float left, float right, float bottom, float top, float near, float far) {
+        android.opengl.Matrix.orthoM(array, 0, left, right, bottom, top, near, far);
+
+        return this;
+    }
+
     public Vector tranformPoint(Vector point) {
         Vector result = new Vector();
 
