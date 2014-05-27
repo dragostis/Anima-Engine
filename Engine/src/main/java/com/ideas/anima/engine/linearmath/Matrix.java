@@ -9,12 +9,24 @@ public class Matrix {
         array[0] = array[5] = array[10] = array[15] = 1.0f;
     }
 
+    public Matrix(Matrix matrix) {
+        System.arraycopy(matrix.getArray(), 0, array, 0, 16);
+    }
+
     public float[] getArray() {
         return array;
     }
 
     public Matrix multiply(Matrix matrix) {
         android.opengl.Matrix.multiplyMM(result, 0, matrix.getArray(), 0, array, 0);
+
+        System.arraycopy(result, 0, array, 0, 16);
+
+        return this;
+    }
+
+    public Matrix invert() {
+        android.opengl.Matrix.invertM(result, 0, array, 0);
 
         System.arraycopy(result, 0, array, 0, 16);
 
@@ -50,6 +62,24 @@ public class Matrix {
         android.opengl.Matrix.multiplyMM(result, 0, operation, 0, array, 0);
 
         System.arraycopy(result, 0, array, 0, 16);
+
+        return this;
+    }
+
+    public Matrix view(Vector eye, Vector look, Vector up) {
+        android.opengl.Matrix.setLookAtM(
+                array,
+                0,
+                eye.getX(),
+                eye.getY(),
+                eye.getZ(),
+                look.getX(),
+                look.getY(),
+                look.getZ(),
+                up.getX(),
+                up.getY(),
+                up.getZ()
+        );
 
         return this;
     }
