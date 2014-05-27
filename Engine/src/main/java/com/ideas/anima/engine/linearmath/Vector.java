@@ -102,6 +102,18 @@ public class Vector {
         return new Vector(array[0] / length, array[1] / length, array[2] / length);
     }
 
+    public Vector normalizeW() {
+        if (array[3] != 0.0f) {
+            array[0] /= array[3];
+            array[1] /= array[3];
+            array[2] /= array[3];
+
+            array[3] = 1.0f;
+        }
+
+        return this;
+    }
+
     public float distance(Vector a) {
         return subtract(a).length();
     }
