@@ -3,7 +3,7 @@ package com.ideas.anima.engine.graphics.objects.lights;
 import com.ideas.anima.engine.graphics.Vertices;
 import com.ideas.anima.engine.graphics.objects.RenderedObject;
 import com.ideas.anima.engine.graphics.Scene;
-import com.ideas.anima.engine.graphics.Vector;
+import com.ideas.anima.engine.linearmath.Vector;
 
 public class PointLight extends RenderedObject {
     private Vector color;

@@ -1,8 +1,7 @@
 package com.ideas.anima.engine.gameplay.physics;
 
 import com.ideas.anima.engine.gameplay.GameObject;
-import com.ideas.anima.engine.graphics.Quaternion;
-import com.ideas.anima.engine.graphics.Vector;
+import com.ideas.anima.engine.linearmath.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,7 @@ public class PhysicsWorld {
     private List<GameObject> objects = new ArrayList<>();
 
     public PhysicsWorld(Vector gravity) {
-        initialize(gravity.x, gravity.y, gravity.z);
+        initialize(gravity.getX(), gravity.getY(), gravity.getZ());
     }
 
     public void addObject(GameObject object) {
@@ -36,9 +35,9 @@ public class PhysicsWorld {
         for (GameObject object : objects) {
             updates = updateObject(object.getBody().getPointer());
 
-            object.getPosition().x = updates[0];
-            object.getPosition().y = updates[1];
-            object.getPosition().z = updates[2];
+            object.getPosition().setX(updates[0]);
+            object.getPosition().setY(updates[1]);
+            object.getPosition().setZ(updates[2]);
 
             object.getRotation().setX(updates[3]);
             object.getRotation().setY(updates[4]);

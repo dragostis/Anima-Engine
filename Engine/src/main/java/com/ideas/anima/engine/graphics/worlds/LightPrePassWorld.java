@@ -12,7 +12,7 @@ import com.ideas.anima.engine.graphics.FramebufferObject;
 import com.ideas.anima.engine.graphics.Program;
 import com.ideas.anima.engine.graphics.Scene;
 import com.ideas.anima.engine.graphics.Texture;
-import com.ideas.anima.engine.graphics.Vector;
+import com.ideas.anima.engine.linearmath.Vector;
 import com.ideas.anima.engine.graphics.Vertices;
 import com.ideas.anima.engine.graphics.World;
 import com.ideas.anima.engine.graphics.objects.Camera;
@@ -191,21 +191,20 @@ public class LightPrePassWorld extends DirectionalLightWorld {
                 depthNormalBuffer.getDepthTexture().bind(0, depthTextureLocationHandle);
                 depthNormalBuffer.getTextures()[0].bind(1, normalTextureLocationHandle);
 
-                Vector lightPosition = new Vector(pointLight.getPosition())
-                        .transformPointByMatrix(getViewMatrix());
+                Vector lightPosition = getViewMatrix().tranformPoint(pointLight.getPosition());
 
                 GLES30.glUniform3f(
                         lightPositionHandle,
-                        lightPosition.x,
-                        lightPosition.y,
-                        lightPosition.z
+                        lightPosition.getX(),
+                        lightPosition.getY(),
+                        lightPosition.getZ()
                 );
 
                 GLES30.glUniform3f(
                         lightColorHandle,
-                        pointLight.getColor().x,
-                        pointLight.getColor().y,
-                        pointLight.getColor().z
+                        pointLight.getColor().getX(),
+                        pointLight.getColor().getY(),
+                        pointLight.getColor().getZ()
                 );
 
                 GLES30.glUniform1f(lightRadiusHandle, pointLight.getRadius());
@@ -246,24 +245,24 @@ public class LightPrePassWorld extends DirectionalLightWorld {
             depthNormalBuffer.getTextures()[0].bind(1, normalTextureLocationHandle);
             shadowMapBuffer.getDepthTexture().bind(2, shadowMapLocationHandle);
 
-            Vector lightDirection = new Vector(getDirectionalLight().getDirection())
-                    .transformDirectionByMatrix(getViewMatrix());
+            Vector lightDirection = getViewMatrix().tranformDirection(getDirectionalLight()
+                    .getDirection());
 
             GLES30.glUniform3f(
                     lightDirectionHandle,
-                    lightDirection.x,
-                    lightDirection.y,
-                    lightDirection.z
+                    lightDirection.getX(),
+                    lightDirection.getY(),
+                    lightDirection.getZ()
             );
 
             GLES30.glUniform3f(
                     lightColorHandle,
-                    getDirectionalLight().getColor().x,
-                    getDirectionalLight().getColor().y,
-                    getDirectionalLight().getColor().z
+                    getDirectionalLight().getColor().getX(),
+                    getDirectionalLight().getColor().getY(),
+                    getDirectionalLight().getColor().getZ()
             );
 
-            GLES30.glUniformMatrix4fv(smMatrixHandle, 1, false, getShadowMapMatrix(), 0);
+            GLES30.glUniformMatrix4fv(smMatrixHandle, 1, false, getShadowMapMatrix().getArray(), 0);
 
             super.draw();
         }

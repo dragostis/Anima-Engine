@@ -36,9 +36,10 @@ public class Body {
 
         float[] values = new float[7];
 
-        values[0] = object.getPosition().x;
-        values[1] = object.getPosition().y;
-        values[2] = object.getPosition().z;
+        values[0] = object.getPosition().getX();
+        values[1] = object.getPosition().getY();
+        values[2] = object.getPosition().getZ();
+
         values[3] = object.getRotation().getX();
         values[4] = object.getRotation().getY();
         values[5] = object.getRotation().getZ();

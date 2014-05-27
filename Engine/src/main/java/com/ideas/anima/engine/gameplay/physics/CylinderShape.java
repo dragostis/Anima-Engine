@@ -1,6 +1,6 @@
 package com.ideas.anima.engine.gameplay.physics;
 
-import com.ideas.anima.engine.graphics.Vector;
+import com.ideas.anima.engine.linearmath.Vector;
 
 public class CylinderShape implements PrimitiveShape {
     private Vector size;
@@ -19,7 +19,7 @@ public class CylinderShape implements PrimitiveShape {
 
     @Override
     public long getPointer() {
-        return getCylinderShapePointer(size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
+        return getCylinderShapePointer(size.getX() / 2.0f, size.getY() / 2.0f, size.getZ() / 2.0f);
     }
 
     private native long getCylinderShapePointer(float v, float v1, float v2);

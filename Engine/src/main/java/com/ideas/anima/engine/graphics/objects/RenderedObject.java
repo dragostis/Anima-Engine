@@ -1,16 +1,15 @@
 package com.ideas.anima.engine.graphics.objects;
 
 import android.opengl.GLES30;
-import android.opengl.Matrix;
 
 import com.ideas.anima.engine.gameplay.GameObject;
-import com.ideas.anima.engine.graphics.Quaternion;
+import com.ideas.anima.engine.linearmath.Quaternion;
 import com.ideas.anima.engine.graphics.Scene;
-import com.ideas.anima.engine.graphics.Vector;
+import com.ideas.anima.engine.linearmath.Matrix;
+import com.ideas.anima.engine.linearmath.Vector;
 
 public abstract class RenderedObject extends GameObject {
-    private float[] rotationMatrix = new float[16];
-    private float[] modelMatrix = new float[16];
+    private Matrix modelMatrix;
     private boolean shadowCaster;
 
     protected RenderedObject() {
@@ -34,33 +33,28 @@ public abstract class RenderedObject extends GameObject {
     }
 
     protected void updateModelMatrix() {
-        Matrix.setIdentityM(modelMatrix, 0);
+        modelMatrix = new Matrix();
 
-        Matrix.translateM(modelMatrix, 0, getPosition().x, getPosition().y, getPosition().z);
-
-        Matrix.scaleM(modelMatrix, 0, getScale().x, getScale().y, getScale().z);
-
-        System.arraycopy(getRotation().getRotationMatrix(), 0, rotationMatrix, 0, 16);
-
-        Matrix.multiplyMM(rotationMatrix, 0, modelMatrix, 0, rotationMatrix, 0);
-
-        System.arraycopy(rotationMatrix, 0, modelMatrix, 0, 16);
+        modelMatrix.scale(getScale());
+        modelMatrix.rotate(getRotation());
+        modelMatrix.translate(getPosition());
     }
 
     public void draw(Scene scene) {
         updateModelMatrix();
 
         if (scene.getMvpMatrixHandle() != -1) {
-            Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getViewMatrix(), 0, modelMatrix, 0);
+            modelMatrix.multiply(scene.getViewMatrix());
 
             if (scene.getMvMatrixHandle() != -1) {
-                GLES30.glUniformMatrix4fv(scene.getMvMatrixHandle(), 1, false, modelMatrix, 0);
+                GLES30.glUniformMatrix4fv(scene.getMvMatrixHandle(), 1, false,
+                        modelMatrix.getArray(), 0);
             }
 
-            Matrix.multiplyMM(modelMatrix, 0, scene.getWorld().getProjectionMatrix(), 0,
-                    modelMatrix, 0);
+            modelMatrix.multiply(scene.getProjectionMatrix());
 
-            GLES30.glUniformMatrix4fv(scene.getMvpMatrixHandle(), 1, false, modelMatrix, 0);
+            GLES30.glUniformMatrix4fv(scene.getMvpMatrixHandle(), 1, false,
+                    modelMatrix.getArray(), 0);
         }
 
         drawObject(scene);

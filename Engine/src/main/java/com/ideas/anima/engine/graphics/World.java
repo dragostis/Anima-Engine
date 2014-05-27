@@ -1,11 +1,11 @@
 package com.ideas.anima.engine.graphics;
 
 import android.opengl.GLES30;
-import android.opengl.Matrix;
 
 import com.ideas.anima.engine.Game;
 import com.ideas.anima.engine.graphics.objects.Camera;
 import com.ideas.anima.engine.graphics.objects.RenderedObject;
+import com.ideas.anima.engine.linearmath.Matrix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ public abstract class World {
     private Game game;
     private Camera camera;
     private List<RenderedObject> renderedObjects;
-    private float[] viewMatrix;
-    private float[] projectionMatrix;
+    private Matrix viewMatrix;
+    private Matrix projectionMatrix;
 
     public World(Game game, Camera camera) {
         this.game = game;
@@ -46,11 +46,11 @@ public abstract class World {
         return renderedObjects;
     }
 
-    public float[] getViewMatrix() {
+    public Matrix getViewMatrix() {
         return viewMatrix;
     }
 
-    public float[] getProjectionMatrix() {
+    public Matrix getProjectionMatrix() {
         return projectionMatrix;
     }
 
@@ -60,6 +60,14 @@ public abstract class World {
 
     public int getHeight() {
         return getGame().glView.getHeight();
+    }
+
+    public float getNear() {
+        return camera.getNear();
+    }
+
+    public float getFar() {
+        return camera.getFar();
     }
 
     protected void computeMatrices() {

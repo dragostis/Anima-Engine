@@ -1,6 +1,6 @@
 package com.ideas.anima.engine.graphics.objects.lights;
 
-import com.ideas.anima.engine.graphics.Vector;
+import com.ideas.anima.engine.linearmath.Vector;
 
 public class DirectionalLight {
     private Vector direction;

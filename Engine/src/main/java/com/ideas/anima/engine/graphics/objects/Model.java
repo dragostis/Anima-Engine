@@ -4,10 +4,10 @@ import android.opengl.GLES30;
 
 import com.ideas.anima.engine.data.blocks.ModelBlock;
 import com.ideas.anima.engine.graphics.IndexbufferVertices;
-import com.ideas.anima.engine.graphics.Quaternion;
+import com.ideas.anima.engine.linearmath.Quaternion;
 import com.ideas.anima.engine.graphics.Scene;
 import com.ideas.anima.engine.graphics.Texture;
-import com.ideas.anima.engine.graphics.Vector;
+import com.ideas.anima.engine.linearmath.Vector;
 import com.ideas.anima.engine.graphics.Vertices;
 
 public class Model extends RenderedObject {
@@ -80,27 +80,27 @@ public class Model extends RenderedObject {
         if (scene.getAmbientHandle() != -1) {
             GLES30.glUniform3f(
                     scene.getAmbientHandle(),
-                    ambientColor.x,
-                    ambientColor.y,
-                    ambientColor.z
+                    ambientColor.getX(),
+                    ambientColor.getY(),
+                    ambientColor.getZ()
             );
         }
 
         if (scene.getDiffuseHandle() != -1) {
             GLES30.glUniform3f(
                     scene.getDiffuseHandle(),
-                    diffuseColor.x,
-                    diffuseColor.y,
-                    diffuseColor.z
+                    diffuseColor.getX(),
+                    diffuseColor.getY(),
+                    diffuseColor.getZ()
             );
         }
 
         if (scene.getSpecularHandle() != -1) {
             GLES30.glUniform3f(
                     scene.getSpecularHandle(),
-                    specularColor.x,
-                    specularColor.y,
-                    specularColor.z
+                    specularColor.getX(),
+                    specularColor.getY(),
+                    specularColor.getZ()
             );
         }
 

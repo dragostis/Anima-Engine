@@ -1,8 +1,8 @@
 package com.ideas.anima.engine.gameplay;
 
 import com.ideas.anima.engine.gameplay.physics.Body;
-import com.ideas.anima.engine.graphics.Quaternion;
-import com.ideas.anima.engine.graphics.Vector;
+import com.ideas.anima.engine.linearmath.Quaternion;
+import com.ideas.anima.engine.linearmath.Vector;
 
 public class GameObject {
     private Vector position;

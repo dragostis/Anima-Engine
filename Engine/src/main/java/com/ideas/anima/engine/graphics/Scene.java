@@ -2,8 +2,7 @@ package com.ideas.anima.engine.graphics;
 
 import android.opengl.GLES30;
 
-import com.ideas.anima.engine.graphics.Program;
-import com.ideas.anima.engine.graphics.World;
+import com.ideas.anima.engine.linearmath.Matrix;
 
 public abstract class Scene {
     protected Program program;
@@ -80,6 +79,14 @@ public abstract class Scene {
         return normalMapLocationHandle;
     }
 
+    public Matrix getViewMatrix() {
+        return world.getViewMatrix();
+    }
+
+    public Matrix getProjectionMatrix() {
+        return world.getProjectionMatrix();
+    }
+
     public void use() {
         program.use();
     }
@@ -111,13 +118,13 @@ public abstract class Scene {
         if (screenRatioHandle != -1) {
             GLES30.glUniform2f(
                     screenRatioHandle,
-                    1.0f / getWorld().getWidth(),
-                    1.0f / getWorld().getHeight()
+                    1.0f / world.getWidth(),
+                    1.0f / world.getHeight()
             );
         }
 
         if (projectionVectorHandle != -1) {
-            float[] projectionMatrix = getWorld().getProjectionMatrix();
+            float[] projectionMatrix = world.getProjectionMatrix().getArray();
 
             GLES30.glUniform4f(
                     projectionVectorHandle,
@@ -129,9 +136,9 @@ public abstract class Scene {
 
             GLES30.glUniform3f(
                     clipVectorHandle,
-                    -getWorld().getCamera().getNear() * getWorld().getCamera().getFar(),
-                    getWorld().getCamera().getNear() - getWorld().getCamera().getFar(),
-                    getWorld().getCamera().getFar()
+                    -world.getNear() * world.getFar(),
+                    world.getNear() - world.getFar(),
+                    world.getFar()
             );
         }
 

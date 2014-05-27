@@ -7,7 +7,7 @@ import com.ideas.anima.engine.graphics.DisposableVertices;
 import com.ideas.anima.engine.graphics.Program;
 import com.ideas.anima.engine.graphics.Scene;
 import com.ideas.anima.engine.graphics.Texture;
-import com.ideas.anima.engine.graphics.Vector;
+import com.ideas.anima.engine.linearmath.Vector;
 import com.ideas.anima.engine.graphics.World;
 
 public abstract class PostProcessingScene extends Scene {
@@ -68,12 +68,14 @@ public abstract class PostProcessingScene extends Scene {
     }
 
     private DisposableVertices getQuad() {
-        float[] quadArray = {position.x        , position.y + height,  0.0f,  0.0f,  1.0f,
-                             position.x        , position.y         ,  0.0f,  0.0f,  0.0f,
-                             position.x + width, position.y         ,  0.0f,  1.0f,  0.0f,
-                             position.x        , position.y + height,  0.0f,  0.0f,  1.0f,
-                             position.x + width, position.y         ,  0.0f,  1.0f,  0.0f,
-                             position.x + width, position.y + height,  0.0f,  1.0f,  1.0f};
+        float[] quadArray = {
+                position.getX()        , position.getY() + height,  0.0f,  0.0f,  1.0f,
+                position.getX()        , position.getY()         ,  0.0f,  0.0f,  0.0f,
+                position.getX() + width, position.getY()         ,  0.0f,  1.0f,  0.0f,
+                position.getX()        , position.getY() + height,  0.0f,  0.0f,  1.0f,
+                position.getX() + width, position.getY()         ,  0.0f,  1.0f,  0.0f,
+                position.getX() + width, position.getY() + height,  0.0f,  1.0f,  1.0f
+        };
 
         VerticesBlock verticesBlock = new VerticesBlock(quadArray);
 
