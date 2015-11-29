@@ -9,27 +9,58 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class MRubyState {
-    static {
-        System.loadLibrary("mrubystate");
-    }
-
-
     public long pointer;
     private List<Class> classes;
     private Context context;
     private String currentPath;
-    private RequiredFiles requiredFiles = new RequiredFiles();
+    private RequiredFiles requiredFiles;
+    private Cache<String, String> cache;
 
     public MRubyState(String rootPath, AssetManager assetManager) {
         pointer = getStatePointer();
         classes = new ArrayList<Class>();
         context = new AssetsContext(assetManager);
+        requiredFiles = new RequiredFiles();
+        cache = new Cache<String, String>(256);
     }
 
     public void loadClass(Class aClass) {
+        loadClass(aClass, ParameterLoad.NONE);
+    }
+
+    public void loadClass(Class aClass, ParameterLoad parameterLoad) {
         classes.add(aClass);
 
         loadClassToState(pointer, getJavaClassName(aClass), getRubyClassName(aClass));
+
+        switch (parameterLoad) {
+            case NONE:
+                break;
+            case CHILDREN:
+                for (Method method : filterObjectMethods(aClass.getMethods())) {
+                    for (Class parameter : method.getParameterTypes()) loadClass(parameter, ParameterLoad.NONE);
+
+                    loadClass(method.getReturnType(), ParameterLoad.NONE);
+                }
+
+                for (Constructor constructor : aClass.getConstructors()) {
+                    for (Class parameter : constructor.getExceptionTypes()) loadClass(parameter, ParameterLoad.NONE);
+                }
+
+                break;
+            case RECURSIVE:
+                for (Method method : filterObjectMethods(aClass.getMethods())) {
+                    for (Class parameter : method.getParameterTypes()) loadClass(parameter, ParameterLoad.RECURSIVE);
+
+                    loadClass(method.getReturnType(), ParameterLoad.RECURSIVE);
+                }
+
+                for (Constructor constructor : aClass.getConstructors()) {
+                    for (Class parameter : constructor.getExceptionTypes()) loadClass(parameter, ParameterLoad.RECURSIVE);
+                }
+
+                break;
+        }
     }
 
     public void loadMethods() {
@@ -81,8 +112,8 @@ public class MRubyState {
     }
 
     private String getRubyMethodName(String javaName) {
-        javaName = javaName.replaceAll("get", "");
-        if (javaName.matches("set.*")) javaName = javaName.substring(3) + '=';
+        if (javaName.matches("^get.+")) javaName = javaName.substring(3);
+        if (javaName.matches("^set.+")) javaName = javaName.substring(3) + '=';
 
         javaName = Character.toLowerCase(javaName.charAt(0)) + javaName.substring(1);
 
@@ -178,17 +209,26 @@ public class MRubyState {
     }
 
     public void executeStream(InputStream mrubyStream, String fileName) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(mrubyStream));
-        StringBuilder stringBuilder = new StringBuilder();
+        String cached = cache.get(fileName);
 
-        String line;
+        if (cached != null) {
+            loadString(pointer, cached, fileName);
+        } else {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(mrubyStream));
+            StringBuilder stringBuilder = new StringBuilder();
 
-        while((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line);
-            stringBuilder.append("\n");
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+                stringBuilder.append("\n");
+            }
+
+            String string = stringBuilder.toString();
+
+            cache.put(fileName, string);
+            loadString(pointer, string, fileName);
         }
-
-        loadString(pointer, stringBuilder.toString(), fileName);
     }
 
     private boolean require(String path) throws IOException {
@@ -205,6 +245,12 @@ public class MRubyState {
 
             return true;
         }
+    }
+
+    public static enum ParameterLoad {
+        NONE,
+        CHILDREN,
+        RECURSIVE
     }
 
     private static class RequiredFiles {
@@ -230,6 +276,21 @@ public class MRubyState {
                     return false;
                 }
             }
+        }
+    }
+
+    private static class Cache<K, V> extends LinkedHashMap<K, V> {
+        private int size;
+
+        public Cache(int size) {
+            super(16, 0.75f, true);
+
+            this.size = size;
+        }
+
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+            return size() >= size;
         }
     }
 
