@@ -667,16 +667,21 @@ Java_org_anima_engine_scripting_MRubyState_loadString(JNIEnv *env, jobject insta
 
     const char* fileNameString = (*env)->GetStringUTFChars(env, fileName, NULL);
     const char* mrubyCode = (*env)->GetStringUTFChars(env, mrubyString, NULL);
+    char* code = malloc(strlen(mrubyCode) + 1);
+
+    strcpy(code, mrubyCode);
 
     mrbc_filename(mrb, context, fileNameString);
 
-    mrb_load_string_cxt(mrb, mrubyString, context);
+    mrb_load_string_cxt(mrb, code, context);
 
     if (mrb->exc != NULL) {
         mrb_value message = mrb_funcall(mrb, mrb_obj_value(mrb->exc), "inspect", 0);
 
         throwRuntimeException(env, mrb_string_value_ptr(mrb, message));
     }
+
+    free(code);
 
     (*env)->ReleaseStringUTFChars(env, fileName, fileNameString);
     (*env)->ReleaseStringUTFChars(env, fileName, mrubyCode);
