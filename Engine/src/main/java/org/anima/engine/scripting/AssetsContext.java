@@ -14,6 +14,6 @@ public class AssetsContext implements Context {
 
     @Override
     public InputStream get(String fileName) throws IOException {
-        return assetMananager.open(fileName);
+        return assetMananager.open("scripts/" + fileName);
     }
 }

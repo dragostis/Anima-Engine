@@ -1,1 +1,1 @@
-include ':engine'
+include ':engine', ':test'

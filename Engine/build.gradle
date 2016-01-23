@@ -1,14 +1,32 @@
 apply plugin: 'com.android.model.library'
 
+def root = file(project(':engine').projectDir).absolutePath
+
 model {
+    repositories {
+        libs(PrebuiltLibraries) {
+            bullet {
+                headers.srcDir "${root}/native/include"
+                binaries.withType(StaticLibraryBinary) {
+                    staticLibraryFile = file("${root}/native/lib/${targetPlatform.getName()}/libbullet.a")
+                }
+            }
+            mruby {
+                headers.srcDir "${root}/native/include"
+                binaries.withType(StaticLibraryBinary) {
+                    staticLibraryFile = file("${root}/native/lib/${targetPlatform.getName()}/libmruby.a")
+                }
+            }
+        }
+    }
+
     android {
-        compileSdkVersion = 22
+        compileSdkVersion = 23
         buildToolsVersion = '22.0.1'
-        publishNonDefault = true
 
         defaultConfig.with {
             minSdkVersion.apiLevel = 19
-            targetSdkVersion.apiLevel = 22
+            targetSdkVersion.apiLevel = 23
         }
     }
 
@@ -21,17 +39,17 @@ model {
 
     android.ndk {
         moduleName = 'anima'
-        CFlags.add("-I${file('native/include')}".toString())
-        cppFlags.add("-I${file('native/include')}".toString())
-        ldLibs.addAll(['bullet', 'mruby'])
+        ldLibs.addAll(['log'])
     }
 
-    android.productFlavors {
-        create('arm7') {
-            String abi = 'armeabi-v7a'
-
-            ndk.abiFilters.add(abi)
-            ndk.ldFlags.add('-Lnative/lib/' + abi)
+    android.sources {
+        main {
+            jni {
+                dependencies {
+                    library 'bullet' linkage 'static'
+                    library 'mruby' linkage 'static'
+                }
+            }
         }
     }
 }
