@@ -5,8 +5,8 @@ import org.anima.engine.data.Block;
 public class KeyFramedModelBlock extends Block {
     private ModelBlock[] children;
 
-    public KeyFramedModelBlock(int[] indices) {
-        super(indices);
+    public KeyFramedModelBlock(int id) {
+        super(id);
     }
 
     public ModelBlock[] getChildren() {

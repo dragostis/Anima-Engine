@@ -14,24 +14,33 @@ public class Model extends RenderedObject {
     private Vertices vertices;
     private Texture texture;
     private Texture normalMap;
-    private Vector ambientColor = new Vector(0.01f);
-    private Vector diffuseColor = new Vector(0.7f);
-    private Vector specularColor = new Vector(0.0f);
+    private Vector ambientColor;
+    private Vector diffuseColor;
+    private Vector specularColor;
+    private float shininess;
 
     public Model(ModelBlock modelBlock) {
         super();
 
         vertices = new IndexbufferVertices(modelBlock.getVerticesBlock());
-        texture = new Texture(modelBlock.getTextureBlock());
-        normalMap = new Texture(modelBlock.getNormalMapBlock());
+        texture = new Texture(modelBlock.getMaterialBlock().getTextureBlock());
+        normalMap = new Texture(modelBlock.getMaterialBlock().getNormalMapBlock());
+        ambientColor = new Vector(modelBlock.getMaterialBlock().getAmbientColor());
+        diffuseColor = new Vector(modelBlock.getMaterialBlock().getDiffuseColor());
+        specularColor = new Vector(modelBlock.getMaterialBlock().getSpecularColor());
+        shininess = modelBlock.getMaterialBlock().getShininess();
     }
 
     public Model(Vector position, Vector scale, Quaternion rotation, ModelBlock modelBlock) {
         super(position, scale, rotation);
 
         vertices = new IndexbufferVertices(modelBlock.getVerticesBlock());
-        texture = new Texture(modelBlock.getTextureBlock());
-        normalMap = new Texture(modelBlock.getNormalMapBlock());
+        texture = new Texture(modelBlock.getMaterialBlock().getTextureBlock());
+        normalMap = new Texture(modelBlock.getMaterialBlock().getNormalMapBlock());
+        ambientColor = new Vector(modelBlock.getMaterialBlock().getAmbientColor());
+        diffuseColor = new Vector(modelBlock.getMaterialBlock().getDiffuseColor());
+        specularColor = new Vector(modelBlock.getMaterialBlock().getSpecularColor());
+        shininess = modelBlock.getMaterialBlock().getShininess();
     }
 
     public Model(Model model) {
@@ -43,30 +52,7 @@ public class Model extends RenderedObject {
         this.ambientColor = model.ambientColor;
         this.diffuseColor = model.diffuseColor;
         this.specularColor = model.specularColor;
-    }
-
-    public Vector getAmbientColor() {
-        return ambientColor;
-    }
-
-    public void setAmbientColor(Vector ambientColor) {
-        this.ambientColor = ambientColor;
-    }
-
-    public Vector getDiffuseColor() {
-        return diffuseColor;
-    }
-
-    public void setDiffuseColor(Vector diffuseColor) {
-        this.diffuseColor = diffuseColor;
-    }
-
-    public Vector getSpecularColor() {
-        return specularColor;
-    }
-
-    public void setSpecularColor(Vector specularColor) {
-        this.specularColor = specularColor;
+        this.shininess = model.shininess;
     }
 
     @Override

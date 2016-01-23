@@ -7,8 +7,8 @@ import java.io.InputStream;
 public class TextureBlock extends Block {
     private InputStream inputStream;
 
-    public TextureBlock(InputStream inputStream) {
-        super(null);
+    public TextureBlock(int id, InputStream inputStream) {
+        super(id);
 
         this.inputStream = inputStream;
     }

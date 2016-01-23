@@ -1,13 +1,9 @@
 package org.anima.engine.data;
 
 public class Block {
-    private int[] indices;
+    private int id;
 
-    protected Block(int[] indices) {
-        this.indices = indices;
-    }
+    protected Block(int id) { this.id = id; }
 
-    protected int[] getIndices() {
-        return indices;
-    }
+    protected int getId() { return id; }
 }

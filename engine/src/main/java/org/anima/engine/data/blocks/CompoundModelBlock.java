@@ -2,12 +2,18 @@ package org.anima.engine.data.blocks;
 
 import org.anima.engine.data.Block;
 
-public class CompoundModelBLock extends Block {
+public class CompoundModelBlock extends Block {
+    private int[] childrenIds;
+
     private ModelBlock[] children;
 
-    public CompoundModelBLock(int[] indices) {
-        super(indices);
+    public CompoundModelBlock(int id, int[] childrenIds) {
+        super(id);
+
+        this.childrenIds = childrenIds;
     }
+
+    public int[] getChildrenIds() { return childrenIds; }
 
     public ModelBlock[] getChildren() {
         return children;

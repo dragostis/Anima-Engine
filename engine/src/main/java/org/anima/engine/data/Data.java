@@ -1,21 +1,21 @@
 package org.anima.engine.data;
 
-import org.anima.engine.data.blocks.AnimatedParticleBlock;
-import org.anima.engine.data.blocks.CompoundModelBLock;
-import org.anima.engine.data.blocks.KeyFramedModelBlock;
+import org.anima.engine.data.blocks.CompoundModelBlock;
+import org.anima.engine.data.blocks.MaterialBlock;
 import org.anima.engine.data.blocks.ModelBlock;
-import org.anima.engine.data.blocks.NormalMapBlock;
-import org.anima.engine.data.blocks.ParticleBlock;
 import org.anima.engine.data.blocks.TextureBlock;
 import org.anima.engine.data.blocks.VerticesBlock;
 import org.anima.engine.io.IO;
+import org.anima.engine.linearmath.Vector;
 
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Data {
     private Block root;
@@ -34,82 +34,68 @@ public class Data {
     }
 
     private Block getRoot(DataInputStream dataInputStream) throws IOException {
-        List<Block> blocks = new ArrayList<Block>();
+        Map<Integer, Block> blocksMap = new HashMap<>();
 
         while (true) {
             try {
                 Type type = Type.values()[dataInputStream.readInt()];
 
-                int numberOfChildren;
-                int[] indices;
-
-                int length;
-                float[] content;
-
-                String path;
+                // TODO: remove it from models themselves
+                // it's currently used to associate between blocks, but we should do that in this
+                // method, and initialize objects without ids, both direct and referential
+                int id = dataInputStream.readInt();
 
                 switch (type) {
                     case MODEL:
-                        numberOfChildren = dataInputStream.readInt();
-                        indices = new int[numberOfChildren];
+                        int vertexId = dataInputStream.readInt();
+                        int materialId = dataInputStream.readInt();
 
-                        for (int i = 0; i < numberOfChildren; i++) indices[i] = dataInputStream.readInt();
-
-                        blocks.add(new ModelBlock(indices));
+                        blocksMap.put(id, new ModelBlock(id, vertexId, materialId));
 
                         break;
                     case COMPOUND_MODEL:
-                        numberOfChildren = dataInputStream.readInt();
-                        indices = new int[numberOfChildren];
+                        int childrenNumber = dataInputStream.readInt();
+                        int[] childrenIds = new int[childrenNumber];
 
-                        for (int i = 0; i < numberOfChildren; i++) indices[i] = dataInputStream.readInt();
+                        for (int i = 0; i < childrenNumber; i++) childrenIds[i] = dataInputStream.readInt();
 
-                        blocks.add(new CompoundModelBLock(indices));
-
-                        break;
-                    case KEY_FRAMED_MODEL:
-                        numberOfChildren = dataInputStream.readInt();
-                        indices = new int[numberOfChildren];
-
-                        for (int i = 0; i < numberOfChildren; i++) indices[i] = dataInputStream.readInt();
-
-                        blocks.add(new KeyFramedModelBlock(indices));
+                        blocksMap.put(id, new CompoundModelBlock(id, childrenIds));
 
                         break;
-                    case PARTICLE:
-                        path = dataInputStream.readUTF();
+                    case MATERIAL:
+                        // Use Vector or float[]?
+                        Vector ambient = new Vector(dataInputStream.readFloat(),
+                                                    dataInputStream.readFloat(),
+                                                    dataInputStream.readFloat());
+                        Vector diffuse = new Vector(dataInputStream.readFloat(),
+                                                    dataInputStream.readFloat(),
+                                                    dataInputStream.readFloat());
+                        Vector specular = new Vector(dataInputStream.readFloat(),
+                                                     dataInputStream.readFloat(),
+                                                     dataInputStream.readFloat());
+                        float shininess = dataInputStream.readFloat();
+                        int textureId = dataInputStream.readInt();
+                        int normalMapId = dataInputStream.readInt();
 
-                        blocks.add(new ParticleBlock(path));
-
-                        break;
-                    case ANIMATED_PARTICLE:
-                        numberOfChildren = dataInputStream.readInt();
-                        indices = new int[numberOfChildren];
-
-                        for (int i = 0; i < numberOfChildren; i++) indices[i] = dataInputStream.readInt();
-
-                        blocks.add(new AnimatedParticleBlock(indices));
+                        blocksMap.put(id, new MaterialBlock(id, ambient, diffuse, specular, shininess,
+                                                            textureId, normalMapId));
 
                         break;
                     case VERTICES:
-                        length = dataInputStream.readInt();
-                        content = new float[length];
+                        int length = dataInputStream.readInt();
+                        float[] content = new float[length];
 
                         for (int i = 0; i < length; i++) content[i] = dataInputStream.readFloat();
 
-                        blocks.add(new VerticesBlock(content));
+                        blocksMap.put(id, new VerticesBlock(id, content));
 
                         break;
                     case TEXTURE:
-                        path = dataInputStream.readUTF();
+                        length = dataInputStream.readInt();
+                        byte[] path = new byte[length];
+                        dataInputStream.read(path, 0, length);
 
-                        blocks.add(new TextureBlock(io.readAsset(path)));
-
-                        break;
-                    case NORMAL_MAP:
-                        path = dataInputStream.readUTF();
-
-                        blocks.add(new NormalMapBlock(io.readAsset(path)));
+                        blocksMap.put(id, new TextureBlock(id, io.readAsset(new String(path))));
 
                         break;
                 }
@@ -118,47 +104,25 @@ public class Data {
             }
         }
 
-        for (Block block : blocks) {
+        for (Block block : blocksMap.values()) {
             if (block instanceof ModelBlock) {
                 ModelBlock modelBlock = (ModelBlock) block;
 
-                modelBlock.setVerticesBlock((VerticesBlock) blocks.get(block.getIndices()[0]));
-                modelBlock.setTextureBlock((TextureBlock) blocks.get(block.getIndices()[1]));
-                modelBlock.setNormalMapBlock((NormalMapBlock) blocks.get(block.getIndices()[2]));
+                modelBlock.setVerticesBlock((VerticesBlock) blocksMap.get(modelBlock.getVertexId()));
+                modelBlock.setMaterialBlock((MaterialBlock) blocksMap.get(modelBlock.getMaterialId()));
             }
 
-            if (block instanceof CompoundModelBLock) {
-                CompoundModelBLock compoundModelBLock = (CompoundModelBLock) block;
-                ModelBlock[] children = new ModelBlock[block.getIndices().length];
+            if (block instanceof CompoundModelBlock) {
+                CompoundModelBlock compoundModelBlock = (CompoundModelBlock) block;
+                ModelBlock[] children = new ModelBlock[compoundModelBlock.getChildrenIds().length];
 
-                for (int i = 0; i < children.length; i++) children[i] = (ModelBlock) blocks.get(
-                        block.getIndices()[i]);
+                for (int i = 0; i < children.length; i++) children[i] = (ModelBlock) blocksMap.get(i);
 
-                compoundModelBLock.setChildren(children);
-            }
-
-            if (block instanceof KeyFramedModelBlock) {
-                KeyFramedModelBlock keyFramedModelBlock = (KeyFramedModelBlock) block;
-                ModelBlock[] children = new ModelBlock[block.getIndices().length];
-
-                for (int i = 0; i < children.length; i++) children[i] = (ModelBlock) blocks.get(
-                        block.getIndices()[i]);
-
-                keyFramedModelBlock.setChildren(children);
-            }
-
-            if (block instanceof AnimatedParticleBlock) {
-                AnimatedParticleBlock animatedParticleBlock = (AnimatedParticleBlock) block;
-                ParticleBlock[] children = new ParticleBlock[block.getIndices().length];
-
-                for (int i = 0; i < children.length; i++) children[i] = (ParticleBlock) blocks.get(
-                        block.getIndices()[i]);
-
-                animatedParticleBlock.setChildren(children);
+                compoundModelBlock.setChildren(children);
             }
         }
 
-        return blocks.get(0);
+        return blocksMap.get(0);
     }
 
     private enum Type {
@@ -168,7 +132,7 @@ public class Data {
         PARTICLE,
         ANIMATED_PARTICLE,
         VERTICES,
+        MATERIAL,
         TEXTURE,
-        NORMAL_MAP
     }
 }
