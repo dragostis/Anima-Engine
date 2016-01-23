@@ -10,10 +10,8 @@ public class ModelBlock extends Block {
     private MaterialBlock materialBlock;
 
 
-    public ModelBlock(int id,
-                      int vertexId,
+    public ModelBlock(int vertexId,
                       int materialId) {
-        super(id);
         this.vertexId = vertexId;
         this.materialId = materialId;
     }

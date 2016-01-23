@@ -16,14 +16,12 @@ public class MaterialBlock extends Block {
     private TextureBlock textureBlock;
     private TextureBlock normalMapBlock;
 
-    public MaterialBlock(int id,
-                         Vector ambientColor,
+    public MaterialBlock(Vector ambientColor,
                          Vector diffuseColor,
                          Vector specularColor,
                          float shininess,
                          int textureId,
                          int normalMapId) {
-        super(id);
         this.ambientColor = ambientColor;
         this.diffuseColor = diffuseColor;
         this.specularColor = specularColor;

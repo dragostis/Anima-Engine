@@ -50,7 +50,7 @@ public class Data {
                         int vertexId = dataInputStream.readInt();
                         int materialId = dataInputStream.readInt();
 
-                        blocksMap.put(id, new ModelBlock(id, vertexId, materialId));
+                        blocksMap.put(id, new ModelBlock(vertexId, materialId));
 
                         break;
                     case COMPOUND_MODEL:
@@ -59,7 +59,7 @@ public class Data {
 
                         for (int i = 0; i < childrenNumber; i++) childrenIds[i] = dataInputStream.readInt();
 
-                        blocksMap.put(id, new CompoundModelBlock(id, childrenIds));
+                        blocksMap.put(id, new CompoundModelBlock(childrenIds));
 
                         break;
                     case MATERIAL:
@@ -77,7 +77,7 @@ public class Data {
                         int textureId = dataInputStream.readInt();
                         int normalMapId = dataInputStream.readInt();
 
-                        blocksMap.put(id, new MaterialBlock(id, ambient, diffuse, specular, shininess,
+                        blocksMap.put(id, new MaterialBlock(ambient, diffuse, specular, shininess,
                                                             textureId, normalMapId));
 
                         break;
@@ -87,7 +87,7 @@ public class Data {
 
                         for (int i = 0; i < length; i++) content[i] = dataInputStream.readFloat();
 
-                        blocksMap.put(id, new VerticesBlock(id, content));
+                        blocksMap.put(id, new VerticesBlock(content));
 
                         break;
                     case TEXTURE:
@@ -95,7 +95,7 @@ public class Data {
                         byte[] path = new byte[length];
                         dataInputStream.read(path, 0, length);
 
-                        blocksMap.put(id, new TextureBlock(id, io.readAsset(new String(path))));
+                        blocksMap.put(id, new TextureBlock(io.readAsset(new String(path))));
 
                         break;
                 }

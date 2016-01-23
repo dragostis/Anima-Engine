@@ -2,11 +2,11 @@ package org.anima.engine.data.blocks;
 
 import org.anima.engine.data.Block;
 
+// TODO: reimplement this
 public class KeyFramedModelBlock extends Block {
     private ModelBlock[] children;
 
-    public KeyFramedModelBlock(int id) {
-        super(id);
+    public KeyFramedModelBlock() {
     }
 
     public ModelBlock[] getChildren() {

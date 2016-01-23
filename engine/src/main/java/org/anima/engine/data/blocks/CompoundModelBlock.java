@@ -7,9 +7,7 @@ public class CompoundModelBlock extends Block {
 
     private ModelBlock[] children;
 
-    public CompoundModelBlock(int id, int[] childrenIds) {
-        super(id);
-
+    public CompoundModelBlock(int[] childrenIds) {
         this.childrenIds = childrenIds;
     }
 
