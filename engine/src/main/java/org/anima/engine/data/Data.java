@@ -95,7 +95,7 @@ public class Data {
                         byte[] path = new byte[length];
                         dataInputStream.read(path, 0, length);
 
-                        blocksMap.put(id, new TextureBlock(io.readAsset(new String(path))));
+                        blocksMap.put(id, new TextureBlock(io.readAsset(new String(path, "UTF-8"))));
 
                         break;
                 }
