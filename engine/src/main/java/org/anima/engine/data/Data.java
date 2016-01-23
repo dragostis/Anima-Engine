@@ -105,6 +105,13 @@ public class Data {
         }
 
         for (Block block : blocksMap.values()) {
+            if (block instanceof MaterialBlock) {
+                MaterialBlock materialBlock = (MaterialBlock) block;
+
+                materialBlock.setTextureBlock((TextureBlock) blocksMap.get(materialBlock.getTextureId()));
+                materialBlock.setNormalMapBlock((TextureBlock) blocksMap.get(materialBlock.getNormalMapId()));
+            }
+
             if (block instanceof ModelBlock) {
                 ModelBlock modelBlock = (ModelBlock) block;
 
