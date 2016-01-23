@@ -3,12 +3,25 @@ package org.anima.engine.data.blocks;
 import org.anima.engine.data.Block;
 
 public class ModelBlock extends Block {
-    private VerticesBlock verticesBlock;
-    private TextureBlock textureBlock;
-    private NormalMapBlock normalMapBlock;
+    private int vertexId;
+    private int materialId;
 
-    public ModelBlock(int[] indices) {
-        super(indices);
+    private VerticesBlock verticesBlock;
+    private MaterialBlock materialBlock;
+
+
+    public ModelBlock(int vertexId,
+                      int materialId) {
+        this.vertexId = vertexId;
+        this.materialId = materialId;
+    }
+
+    public int getVertexId() {
+        return this.vertexId;
+    }
+
+    public int getMaterialId() {
+        return this.materialId;
     }
 
     public VerticesBlock getVerticesBlock() {
@@ -19,19 +32,11 @@ public class ModelBlock extends Block {
         this.verticesBlock = verticesBlock;
     }
 
-    public TextureBlock getTextureBlock() {
-        return textureBlock;
+    public MaterialBlock getMaterialBlock() {
+        return materialBlock;
     }
 
-    public void setTextureBlock(TextureBlock textureBlock) {
-        this.textureBlock = textureBlock;
-    }
-
-    public NormalMapBlock getNormalMapBlock() {
-        return normalMapBlock;
-    }
-
-    public void setNormalMapBlock(NormalMapBlock normalMapBlock) {
-        this.normalMapBlock = normalMapBlock;
+    public void setMaterialBlock(MaterialBlock materialBlock) {
+        this.materialBlock = materialBlock;
     }
 }

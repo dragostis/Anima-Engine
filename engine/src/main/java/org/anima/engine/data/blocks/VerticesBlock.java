@@ -10,9 +10,7 @@ public class VerticesBlock extends Block {
     private static final int bytesPerFloat = 4;
     private FloatBuffer floatBuffer;
 
-    public VerticesBlock(float[] content) {
-        super(null);
-
+    public VerticesBlock(float[]content) {
         putInBuffer(content);
     }
 

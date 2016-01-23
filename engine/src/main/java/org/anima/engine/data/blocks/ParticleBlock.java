@@ -6,8 +6,6 @@ public class ParticleBlock extends Block {
     private String path;
 
     public ParticleBlock(String path) {
-        super(null);
-
         this.path = path;
     }
 }
